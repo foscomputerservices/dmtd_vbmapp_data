@@ -51,7 +51,7 @@ module DmtdVbmappData
 
     def retrieve_guide_index
       response = RequestHelpers::get_authorized(end_point: Guide::end_point, params: nil, client_id: @client.id, client_code: @client.code)
-      proc_response = process_response(response)
+      proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]
 
@@ -59,18 +59,6 @@ module DmtdVbmappData
       result = server_response_code if json.nil?
 
       result
-    end
-
-    def process_response(response)
-      json = nil
-      server_response_code = response.code.to_i
-
-      if server_response_code == 200
-        json_body = Hashie.symbolize_keys!(JSON.parse(response.body))
-        json = json_body[:response]
-      end
-
-      { json: json, code: server_response_code }
     end
   end
 

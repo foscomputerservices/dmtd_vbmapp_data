@@ -37,15 +37,23 @@ module DmtdVbmappData
       post url(end_point), params, client_id, client_code
     end
 
-    # def put_authorized(path, parameters = nil, user = nil, client = nil, headers_or_env = nil)
-    #   put path, parameters, add_auth(headers_or_env, user, client)
-    # end
+    # Process a JSON response from the server
     #
-    # def delete_authorized(path, parameters = nil, user = nil, client = nil, headers_or_env = nil)
-    #   delete path, parameters, add_auth(headers_or_env, user, client)
-    # end
+    # Returns:
+    # { json: <json>, code: <response.code.to_i> }
+    def self.process_json_response(response)
+      json = nil
+      server_response_code = response.code.to_i
 
-    private
+      if server_response_code == 200
+        json_body = Hashie.symbolize_keys!(JSON.parse(response.body))
+        json = json_body[:response]
+      end
+
+      { json: json, code: server_response_code }
+    end
+
+  private
 
     def self.get(uri, params, client_id, client_code)
       http = Net::HTTP.new(uri.host, uri.port)
