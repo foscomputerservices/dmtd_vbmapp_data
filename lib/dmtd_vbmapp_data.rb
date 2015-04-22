@@ -1,6 +1,9 @@
 require 'dmtd_vbmapp_data/version'
 require 'dmtd_vbmapp_data/guide'
+require 'dmtd_vbmapp_data/client'
 require 'psych'
+require 'json'
+require 'hashie'
 
 module DmtdVbmappData
 
