@@ -49,8 +49,10 @@ module DmtdVbmappData
       @last_name = opts.fetch(:last_name, nil)
       @settings = opts.fetch(:settings, nil)
       @server_response_code = opts.fetch(:server_response_code, 200)
-      @created_at = opts.fetch(:created_at, Date.now.getutc)
-      @updated_at = opts.fetch(:updated_at, Date.now.getutc)
+
+      date = Time.now.utc.to_date
+      @created_at = opts.fetch(:created_at, date)
+      @updated_at = opts.fetch(:updated_at, date)
 
       create_server_client if @id.nil?
     end
@@ -63,6 +65,11 @@ module DmtdVbmappData
     # Array of DmtdVbmappData::Client instances or server http response code (integer) if an error was received
     def self.retrieve_clients(opts = {})
       retrieve_server_clients(opts)
+    end
+
+    # Retrieves the guide for the corresponding client instance
+    def guide
+      Guide.new(client: self)
     end
 
     private

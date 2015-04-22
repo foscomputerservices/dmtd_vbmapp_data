@@ -51,7 +51,7 @@ module DmtdVbmappData
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
       add_auth(request, client_id, client_code)
-      request.set_form_data params
+      request.set_form_data params unless params.nil?
 
       http.request(request)
     end

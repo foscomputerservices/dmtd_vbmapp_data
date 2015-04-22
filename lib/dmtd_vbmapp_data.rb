@@ -1,5 +1,8 @@
 require 'dmtd_vbmapp_data/version'
 require 'dmtd_vbmapp_data/guide'
+require 'dmtd_vbmapp_data/guide_chapter'
+require 'dmtd_vbmapp_data/guide_chapter_section'
+require 'dmtd_vbmapp_data/guide_section_sub_section'
 require 'dmtd_vbmapp_data/client'
 require 'psych'
 require 'json'
