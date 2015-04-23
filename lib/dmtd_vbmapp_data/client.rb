@@ -72,6 +72,11 @@ module DmtdVbmappData
       Guide.new(client: self)
     end
 
+    # Retrieves the vbmapp for the corresponding client instance
+    def vbmapp
+      Vbmapp.new(client: self)
+    end
+
     private
 
     def self.end_point

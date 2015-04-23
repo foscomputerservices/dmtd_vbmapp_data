@@ -1,12 +1,23 @@
-require 'dmtd_vbmapp_data/version'
+# External deps
+require 'psych'
+require 'json'
+require 'hashie'
+
+# Our classes
+require 'dmtd_vbmapp_data/client'
+
 require 'dmtd_vbmapp_data/guide'
 require 'dmtd_vbmapp_data/guide_chapter'
 require 'dmtd_vbmapp_data/guide_chapter_section'
 require 'dmtd_vbmapp_data/guide_section_sub_section'
-require 'dmtd_vbmapp_data/client'
-require 'psych'
-require 'json'
-require 'hashie'
+
+require 'dmtd_vbmapp_data/vbmapp'
+require 'dmtd_vbmapp_data/vbmapp_area'
+require 'dmtd_vbmapp_data/vbmapp_area_group'
+require 'dmtd_vbmapp_data/vbmapp_area_question'
+require 'dmtd_vbmapp_data/vbmapp_area_response'
+
+require 'dmtd_vbmapp_data/version'
 
 module DmtdVbmappData
 
