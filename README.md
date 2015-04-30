@@ -2,8 +2,7 @@
 
 [![CI Status](http://img.shields.io/travis/foscomputerservices/dmtd_vbmapp_data.svg?style=flat)](https://travis-ci.org/foscomputerservices/dmtd_vbmapp_data)
 [![Version](https://img.shields.io/gem/v/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
-[![License](https://img.shields.io/gem/l/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
-[![Platform](https://img.shields.io/gem/p/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
+[![License](https://img.shields.io/github/license/foscomputerservices/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
 
 The gem is provided to ease access to DMTD's vbmappapp.com REST service.
 
@@ -32,6 +31,10 @@ DmtdVbmappData.configure server_url: 'your_assigned_web_service_url' # It can al
 DmtdVbmappData.configure auth_token: 'your_auth_token'
 DmtdVbmappData.configure organization_id: your_organization_id
 ```
+
+## Further Reading
+
+Full documentation of the gem can be found at: [http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)  
 
 ## Contributing
 
