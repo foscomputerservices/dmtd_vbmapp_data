@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['support@vbmappapp.com']
 
   spec.summary       = %q{Ruby gem to simplify access to DMTD's VB-MAPP REST service}
-  spec.description   = %q{This gem provides a simplified Ruby API for DMTD customers accessing the vbmappdata.com REST service.}
-  spec.homepage      = 'http://vbmappdata.com'
+  spec.description   = %q{This gem provides a simplified Ruby API for DMTD customers accessing the vbmappapp.com REST service.}
+  spec.homepage      = 'https://github.com/foscomputerservices/dmtd_vbmapp_data'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

@@ -1,6 +1,11 @@
 # DmtdVbmapp
 
-The gem is provided to ease access to DMTD's vbmappdata.com service.
+[![CI Status](http://img.shields.io/travis/foscomputerservices/dmtd_vbmapp_data.svg?style=flat)](https://travis-ci.org/foscomputerservices/dmtd_vbmapp_data)
+[![Version](https://img.shields.io/gem/v/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
+[![License](https://img.shields.io/gem/l/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
+[![Platform](https://img.shields.io/gem/p/dmtd_vbmapp_data.svg?style=flat)](http://www.rubydoc.info/github/foscomputerservices/dmtd_vbmapp_data/master)
+
+The gem is provided to ease access to DMTD's vbmappapp.com REST service.
 
 ## Installation
 
@@ -22,9 +27,11 @@ Or install it yourself as:
 
 Upon receiving an authorization token from Data Makes the Difference, add the following lines to your application's configuration: 
 
-DmtdVbmappData.configure server_url: 'your_assigned_web_service_url' -- It can also be 'http://data-sandbox.vbmappapp.com' for testing purposes
+```ruby
+DmtdVbmappData.configure server_url: 'your_assigned_web_service_url' # It can also be 'http://data-sandbox.vbmappapp.com' for testing purposes
 DmtdVbmappData.configure auth_token: 'your_auth_token'
-DmtdVbmappData.configure organization_id: your_organization_id 
+DmtdVbmappData.configure organization_id: your_organization_id
+```
 
 ## Contributing
 
