@@ -1,16 +1,16 @@
 language: ruby
 
 rvm:
-  - 2.1.0
+- 2.1.0
 
 env:
   global:
   - secure: gP248+snjbNPc0Uk6+rcTqRCVOrC7xsI9kFDQMnC+k04qkZ4B2ZJbz8ZFhws1XFAd0SNhEsmqnxVuTwAIUxdsJpe8eEqUFIYpNRWz6KNL58yADmQX84BjeNLBM4BxPIej4crr+1i++KxW9WVMV1SAA6/5NQ9wR0fCC39HyaVmgk=
   - secure: Tv043DGoNh8bconcyqXVeWPnR81TrbLC2xwiUbdE6Utm9I5s34aqCjeiv1oV8Dd/OfqceHW9exQD9qBgD9VHsV+2VQhuamjwI4Oy4/PwHyyaMuSVKgvQsHfJRdxMNQbHNxfdYBhf4W6yYbSWquP8JzO3fnLtXEVEGDrDBxI3CRg=
+  - secure: GRXGSJG3ygT//t/ADWGLV8G9xYgAs2twmMV9vjP8qpCDn0ijlk3KpwrieqO+Ewz4ru1u1GS6ha5KFlTA5pWRdzc75u7N7xHFbMnLSMe74U54pU12xuAgwo5mGjGm9KcjCRlR5d2aKAcuI2geTz2dfWAZTrjak7mQcy1APUoBmxk=
 
 before_install:
-  - gem install bundler --no-rdoc --no-ri --no-document --quiet
+- gem install bundler --no-rdoc --no-ri --no-document --quiet
 
 script:
-  - bundle exec rspec
-  - bundle exec cucumber
+- bundle exec rspec

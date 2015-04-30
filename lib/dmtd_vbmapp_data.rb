@@ -22,8 +22,9 @@ require 'dmtd_vbmapp_data/version'
 module DmtdVbmappData
 
   @config = {
-      server_url: 'http://vbmappdata.com',
-      auth_token: ''
+      server_url: 'http://data-sandbox.vbmappapp.com',
+      auth_token: '',
+      organization_id: nil
   }
 
   @valid_config_keys = @config.keys

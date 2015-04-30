@@ -34,7 +34,7 @@ module DmtdVbmappData
     # +date_of_birth+:: the date of birth of the client as a ruby Date object
     # +gender+:: the gender of the client, either +GENDER_MALE+ or +GENDER_FEMALE+
     # +id+:: the vbmapp_data server's identifier for this client (may be nil)
-    # +organization_id+:: the organization identifier (may be nil, if so 1 will be used by default)
+    # +organization_id+:: the organization identifier (may be nil, if so DmtdVbmappData.config['organization_id'] will be used)
     # +code+:: a code that can be used to refer to the client; possibly a key in the customer's database (may be nil)
     # +first_name+:: the first name of the client (may be nil)
     # +last_name+:: the last name of the client (may be nil)
@@ -43,7 +43,7 @@ module DmtdVbmappData
       @date_of_birth = opts.fetch(:date_of_birth)
       @gender = opts.fetch(:gender)
       @id = opts.fetch(:id, nil)
-      @organization_id = opts.fetch(:organization_id, 1)
+      @organization_id = opts.fetch(:organization_id, DmtdVbmappData.config[:organization_id])
       @code = opts.fetch(:code, nil)
       @first_name = opts.fetch(:first_name, nil)
       @last_name = opts.fetch(:last_name, nil)

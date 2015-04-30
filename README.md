@@ -20,15 +20,11 @@ Or install it yourself as:
 
 ## Configuration
 
-Upon receiving an authorization token from Data Makes the Difference, add the following line to your application's configuration: 
+Upon receiving an authorization token from Data Makes the Difference, add the following lines to your application's configuration: 
 
-DmtdVbmappData.configure auth_token: 'auth_token'
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+DmtdVbmappData.configure server_url: 'your_assigned_web_service_url' -- It can also be 'http://data-sandbox.vbmappapp.com' for testing purposes
+DmtdVbmappData.configure auth_token: 'your_auth_token'
+DmtdVbmappData.configure organization_id: your_organization_id 
 
 ## Contributing
 

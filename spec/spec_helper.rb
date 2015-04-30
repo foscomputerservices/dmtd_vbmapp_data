@@ -21,7 +21,7 @@ require 'dmtd_vbmapp_data'
 
 RSpec.configure do |config|
 
-  DmtdVbmappData.configure server_url: ENV['VBMDATA_TEST_URL'], auth_token: ENV['VBMDATA_TEST_TOKEN']
+  DmtdVbmappData.configure server_url: ENV['VBMDATA_TEST_URL'], auth_token: ENV['VBMDATA_TEST_TOKEN'], organization_id: ENV['VBMDATA_TEST_ORG_ID']
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
