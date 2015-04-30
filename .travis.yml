@@ -8,6 +8,9 @@ env:
   - secure: gP248+snjbNPc0Uk6+rcTqRCVOrC7xsI9kFDQMnC+k04qkZ4B2ZJbz8ZFhws1XFAd0SNhEsmqnxVuTwAIUxdsJpe8eEqUFIYpNRWz6KNL58yADmQX84BjeNLBM4BxPIej4crr+1i++KxW9WVMV1SAA6/5NQ9wR0fCC39HyaVmgk=
   - secure: Tv043DGoNh8bconcyqXVeWPnR81TrbLC2xwiUbdE6Utm9I5s34aqCjeiv1oV8Dd/OfqceHW9exQD9qBgD9VHsV+2VQhuamjwI4Oy4/PwHyyaMuSVKgvQsHfJRdxMNQbHNxfdYBhf4W6yYbSWquP8JzO3fnLtXEVEGDrDBxI3CRg=
 
+before_install:
+  - gem install bundler --no-rdoc --no-ri --no-document --quiet
+
 script:
   - bundle exec rspec
   - bundle exec cucumber
