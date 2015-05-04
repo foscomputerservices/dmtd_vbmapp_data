@@ -29,10 +29,11 @@ module DmtdVbmappData
     # This operation blocks until it receives a response from the VB-MAPP Data Server.
     #
     # If +id+ is specified, then the instance will *not* be sent to the server, it is assumed to already be there.
+    # Otherwise it will be sent to the server if is_valid_for_create? is true.
     #
     # Params:
-    # +date_of_birth+:: the date of birth of the client as a ruby Date object
-    # +gender+:: the gender of the client, either +GENDER_MALE+ or +GENDER_FEMALE+
+    # +date_of_birth+:: the date of birth of the client as a ruby Date object (may be nil)
+    # +gender+:: the gender of the client, either +GENDER_MALE+ or +GENDER_FEMALE+ (may be nil)
     # +id+:: the vbmapp_data server's identifier for this client (may be nil)
     # +organization_id+:: the organization identifier (may be nil, if so DmtdVbmappData.config['organization_id'] will be used)
     # +code+:: a code that can be used to refer to the client; possibly a key in the customer's database (may be nil)
@@ -40,8 +41,8 @@ module DmtdVbmappData
     # +last_name+:: the last name of the client (may be nil)
     # +settings+:: a string value that can be associated with the client (may be nil)
     def initialize(opts)
-      @date_of_birth = opts.fetch(:date_of_birth)
-      @gender = opts.fetch(:gender)
+      @date_of_birth = opts.fetch(:date_of_birth, nil)
+      @gender = opts.fetch(:gender, nil)
       @id = opts.fetch(:id, nil)
       @organization_id = opts.fetch(:organization_id, DmtdVbmappData.config[:organization_id])
       @code = opts.fetch(:code, nil)
@@ -54,7 +55,7 @@ module DmtdVbmappData
       @created_at = opts.fetch(:created_at, date)
       @updated_at = opts.fetch(:updated_at, date)
 
-      create_server_client if @id.nil?
+      create_server_client if is_valid_for_create?
     end
 
     # Retrieves all existing clients from the VB-MAPP Data Server
@@ -75,6 +76,11 @@ module DmtdVbmappData
     # Retrieves the vbmapp for the corresponding client instance
     def vbmapp
       Vbmapp.new(client: self)
+    end
+
+    # Returns true if the receiver is parametrized correctly for creation on the server
+    def is_valid_for_create?
+      @id.nil? && !@date_of_birth.nil? && !@gender.nil? && !@organization_id.nil?
     end
 
     private

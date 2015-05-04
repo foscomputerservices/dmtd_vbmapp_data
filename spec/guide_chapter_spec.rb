@@ -48,7 +48,7 @@ module DmtdVbmappData
     private
 
     def client
-      Client.retrieve_clients.first
+      Client.new(id: 57)
     end
 
     def chapter_index_json
