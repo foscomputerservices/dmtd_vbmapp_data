@@ -24,7 +24,8 @@ module DmtdVbmappData
   @config = {
       server_url: 'http://data-sandbox.vbmappapp.com',
       auth_token: '',
-      organization_id: nil
+      organization_id: nil,
+      document_type: 'html'
   }
 
   @valid_config_keys = @config.keys

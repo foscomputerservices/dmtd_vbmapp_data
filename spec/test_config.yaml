@@ -1,2 +1,3 @@
 server_url: 'foo.bar.zap'
 auth_token: '123abc'
+document_type: 'my_doc_type'

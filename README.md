@@ -30,6 +30,7 @@ Upon receiving an authorization token from Data Makes the Difference, add the fo
 DmtdVbmappData.configure server_url: 'your_assigned_web_service_url' # It can also be 'http://data-sandbox.vbmappapp.com' for testing purposes
 DmtdVbmappData.configure auth_token: 'your_auth_token'
 DmtdVbmappData.configure organization_id: your_organization_id
+DmtdVbmappData.configure document_type: 'html' # It can be either 'html' or 'text' 
 ```
 
 ## Further Reading

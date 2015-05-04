@@ -85,6 +85,7 @@ module DmtdVbmappData
       request['Content-Type'] = 'application/json'
       request['X-ClientId'] = client_id unless client_id.nil?
       request['X-ClientCode'] = client_code unless client_code.nil?
+      request['X-DocType'] = DmtdVbmappData.config[:document_type].downcase unless DmtdVbmappData.config[:document_type].nil?
     end
   end
 end

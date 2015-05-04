@@ -31,7 +31,7 @@ module DmtdVbmappData
     private
 
     def client
-      Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE)
+      Client.retrieve_clients.first
     end
 
     def section_index_json

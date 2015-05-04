@@ -101,7 +101,7 @@ module DmtdVbmappData
       result = nil
       id = opts.fetch(:id, nil)
       code = opts.fetch(:code, nil)
-      organization_id = opts.fetch(:organization_id, 1)
+      organization_id = opts.fetch(:organization_id, 3)
 
       params = { organization_id: organization_id }
 

@@ -27,10 +27,28 @@ module DmtdVbmappData
       expect(sections.size).to be > 0
     end
 
+    it 'can pull html content' do
+      save_and_set_doc_type new_doc_type: 'html'
+
+      chapter = GuideChapter.new(client: client, chapter_num: 0, chapter_index_json: chapter_index_json)
+      expect(chapter.chapter_preamble.include?('<p>')).to be true
+
+      restore_doc_type
+    end
+
+    it 'can pull text content' do
+      save_and_set_doc_type new_doc_type: 'text'
+
+      chapter = GuideChapter.new(client: client, chapter_num: 0, chapter_index_json: chapter_index_json)
+      expect(chapter.chapter_preamble.include?('<p>')).to be false
+
+      restore_doc_type
+    end
+
     private
 
     def client
-      Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE)
+      Client.retrieve_clients.first
     end
 
     def chapter_index_json
@@ -39,6 +57,17 @@ module DmtdVbmappData
           chapterShortTitle: 'foo',
           chapterTitle: 'bar'
       }
+    end
+
+    def save_and_set_doc_type(new_doc_type:)
+
+      @old_doc_type = DmtdVbmappData.config[:document_type]
+
+      DmtdVbmappData.configure document_type: new_doc_type
+    end
+
+    def restore_doc_type
+      DmtdVbmappData.configure document_type: @old_doc_type
     end
 
   end
