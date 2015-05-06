@@ -20,6 +20,9 @@ module DmtdVbmappData
     # The client for which the report will be generated
     attr_reader :client
 
+    # The language in which the report will be generated
+    attr_reader :language
+
     # Initializes the receiver with the given options:
     #
     # This method does *not* block, simply creates an accessor and returns
@@ -27,9 +30,11 @@ module DmtdVbmappData
     # Params:
     # +client+:: The client for which to run the report
     # +resolver+:: See +resolver+ above
+    # +language+:: the language to use (i.e. 'en', 'es' or may be nil)
     def initialize(opts, &resolver)
       @client = opts.fetch(:client)
       @resolver = resolver
+      @language = opts.fetch(:language, nil)
     end
 
     # Returns the JSON for the IEP report (see https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=19267590) for the
@@ -95,7 +100,7 @@ module DmtdVbmappData
     end
 
     def retrieve_responses_json
-      response = RequestHelpers::get_authorized(end_point: AssessmentReport::end_point, params: nil, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: AssessmentReport::end_point, params: nil, client_id: @client.id, client_code: @client.code, language: language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

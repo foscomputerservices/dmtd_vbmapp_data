@@ -36,9 +36,9 @@ module DmtdVbmappData
       level_name = opts.fetch(:level, nil)
 
       if @questions.nil?
-        question_json = retrieve_question_json
+        questions_json = retrieve_questions_json
 
-        @questions = question_json.map {|question_json|
+        @questions = questions_json.map {|question_json|
           VbmappAreaQuestion.new(client: client, area: area, group: group, question_json: question_json)
         }
       end
@@ -71,12 +71,12 @@ module DmtdVbmappData
       '1/vbmapp/area_question'
     end
 
-    def retrieve_question_json
+    def retrieve_questions_json
       params = {
           area: area,
           group: group
       }
-      response = RequestHelpers::get_authorized(end_point: VbmappAreaGroup::end_point, params: params, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: VbmappAreaGroup::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

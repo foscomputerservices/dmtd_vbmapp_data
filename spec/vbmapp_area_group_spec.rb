@@ -13,12 +13,19 @@ module DmtdVbmappData
     end
 
     it 'has questions' do
-      questions = client.vbmapp.areas[0].groups[0].questions
+      prev_questions = nil
+      AVAILABLE_LANGUAGES.each do |language|
+        questions = client(language: language).vbmapp.areas[0].groups[0].questions
 
-      expect(questions).to_not be nil
+        expect(questions).to_not be nil
 
-      questions.each do |question|
-        expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+        questions.each do |question|
+          expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+        end
+
+        expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
+
+        prev_questions = questions
       end
     end
 
@@ -34,8 +41,10 @@ module DmtdVbmappData
 
     private
 
-    def client
-      Client.new(id: 57)
+    def client(opts = {})
+      language = opts.fetch(:language, nil)
+
+      Client.new(id: 57, language: language)
     end
 
     def group_index_json

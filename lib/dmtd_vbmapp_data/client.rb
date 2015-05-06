@@ -18,6 +18,7 @@ module DmtdVbmappData
     attr_reader :created_at
     attr_reader :updated_at
     attr_reader :server_response_code
+    attr_reader :language
 
     # Creates a new client on the VB-MAPP Data Server
     #
@@ -31,6 +32,9 @@ module DmtdVbmappData
     # If +id+ is specified, then the instance will *not* be sent to the server, it is assumed to already be there.
     # Otherwise it will be sent to the server if is_valid_for_create? is true.
     #
+    # *NOTE:* language is *not* stored on the server along with the client information and thus, it must be
+    #         specified each time the instance is created if a language other than the default is needed.
+    #
     # Params:
     # +date_of_birth+:: the date of birth of the client as a ruby Date object (may be nil)
     # +gender+:: the gender of the client, either +GENDER_MALE+ or +GENDER_FEMALE+ (may be nil)
@@ -40,6 +44,7 @@ module DmtdVbmappData
     # +first_name+:: the first name of the client (may be nil)
     # +last_name+:: the last name of the client (may be nil)
     # +settings+:: a string value that can be associated with the client (may be nil)
+    # +language+:: the language to use (i.e. 'en', 'es' or may be nil)
     def initialize(opts)
       @date_of_birth = opts.fetch(:date_of_birth, nil)
       @gender = opts.fetch(:gender, nil)
@@ -50,6 +55,7 @@ module DmtdVbmappData
       @last_name = opts.fetch(:last_name, nil)
       @settings = opts.fetch(:settings, nil)
       @server_response_code = opts.fetch(:server_response_code, 200)
+      @language = opts.fetch(:language, nil)
 
       date = Time.now.utc.to_date
       @created_at = opts.fetch(:created_at, date)
@@ -62,6 +68,10 @@ module DmtdVbmappData
     #
     # This operation blocks until it receives a response from the VB-MAPP Data Server.
     #
+    # Params:
+    # +organization_id+:: the organization identifier (may be nil, if so DmtdVbmappData.config['organization_id'] will be used)
+    # +language+:: the language to use (i.e. 'en', 'es' or may be nil)
+    #
     # Result:
     # Array of DmtdVbmappData::Client instances or server http response code (integer) if an error was received
     def self.retrieve_clients(opts = {})
@@ -70,12 +80,17 @@ module DmtdVbmappData
 
     # Retrieves the guide for the corresponding client instance
     def guide
-      Guide.new(client: self)
+      Guide.new(client: self, language: language)
     end
 
     # Retrieves the vbmapp for the corresponding client instance
     def vbmapp
-      Vbmapp.new(client: self)
+      Vbmapp.new(client: self, language: language)
+    end
+
+    # Retrieves the IEP report for the corresponding client instance
+    def iep_report(&resolver)
+      AssessmentReport.new(client: self, language: language, &resolver).iep
     end
 
     # Returns true if the receiver is parametrized correctly for creation on the server
@@ -105,13 +120,10 @@ module DmtdVbmappData
 
     def self.retrieve_server_clients(opts)
       result = nil
-      id = opts.fetch(:id, nil)
-      code = opts.fetch(:code, nil)
-      organization_id = opts.fetch(:organization_id, 3)
+      language = opts.fetch(:language, nil)
+      organization_id = opts.fetch(:organization_id, DmtdVbmappData.config[:organization_id])
 
-      params = { organization_id: organization_id }
-
-      response = RequestHelpers::get_authorized(end_point: Client::end_point, params: params, client_id: id, client_code: code)
+      response = RequestHelpers::get_authorized(end_point: Client::end_point, params: {organization_id: organization_id}, language: language)
       proc_response = process_response(response)
       json_array = proc_response[:json]
       server_response_code = proc_response[:code]

@@ -57,7 +57,7 @@ module DmtdVbmappData
       params = {
           area: area
       }
-      response = RequestHelpers::get_authorized(end_point: VbmappArea::end_point, params: params, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: VbmappArea::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

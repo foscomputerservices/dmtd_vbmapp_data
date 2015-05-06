@@ -40,7 +40,11 @@ module DmtdVbmappData
     # Note that this method calls +index+. See that method for
     # its blocking characteristics.
     def chapters
-      index.map.with_index {|chapter_json, chapter_num| GuideChapter.new(client: client, chapter_num: chapter_num, chapter_index_json: chapter_json)}
+      @chapters = index.map.with_index do |chapter_json, chapter_num|
+        GuideChapter.new(client: client, chapter_num: chapter_num, chapter_index_json: chapter_json)
+      end if @chapters.nil?
+
+      @chapters
     end
 
     private
@@ -50,7 +54,7 @@ module DmtdVbmappData
     end
 
     def retrieve_guide_index
-      response = RequestHelpers::get_authorized(end_point: Guide::end_point, params: nil, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: Guide::end_point, params: nil, client_id: @client.id, client_code: @client.code, language: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

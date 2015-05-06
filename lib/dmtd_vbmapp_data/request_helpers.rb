@@ -11,14 +11,16 @@ module DmtdVbmappData
     # +end_point+:: The end point to post
     # +params+:: The parameters to send to the end point (may be nil)
     # +client_id+:: The client id under which to record the post (may be nil)
-    # +client_code+:: The client code under which to record the post (maybe nil)
+    # +client_code+:: The client code under which to record the post (may be nil)
+    # +language+:: The language to fetch (may be nil)
     def self.get_authorized(opts = {})
       end_point = opts.fetch(:end_point)
       params = opts.fetch(:params, nil)
       client_id = opts.fetch(:client_id, nil)
       client_code = opts.fetch(:client_code, nil)
+      language = opts.fetch(:language, nil)
 
-      get url(end_point), params, client_id, client_code
+      get url(end_point), params, client_id, client_code, language
     end
 
     # POST an authorized message to the vbmappdata server
@@ -27,7 +29,7 @@ module DmtdVbmappData
     # +end_point+:: The end point to post
     # +params+:: The parameters to send to the end point (may be nil)
     # +client_id+:: The client id under which to record the post (may be nil)
-    # +client_code+:: The client code under which to record the post (maybe nil)
+    # +client_code+:: The client code under which to record the post (may be nil)
     def self.post_authorized(opts = {})
       end_point = opts.fetch(:end_point)
       params = opts.fetch(:params, nil)
@@ -55,10 +57,10 @@ module DmtdVbmappData
 
   private
 
-    def self.get(uri, params, client_id, client_code)
+    def self.get(uri, params, client_id, client_code, language)
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Get.new(uri.request_uri)
-      add_auth(request, client_id, client_code)
+      add_auth(request, client_id, client_code, language)
       request.set_form_data params unless params.nil?
 
       http.request(request)
@@ -67,7 +69,7 @@ module DmtdVbmappData
     def self.post(uri, params, client_id, client_code)
       http = Net::HTTP.new(uri.host, uri.port)
       request = Net::HTTP::Post.new(uri.request_uri)
-      add_auth(request, client_id, client_code)
+      add_auth(request, client_id, client_code, nil)
       request.body = JSON(params)
 
       http.request(request)
@@ -77,7 +79,7 @@ module DmtdVbmappData
       URI.parse("#{DmtdVbmappData.config[:server_url]}/#{end_point}")
     end
 
-    def self.add_auth(request, client_id = nil, client_code = nil)
+    def self.add_auth(request, client_id = nil, client_code = nil, language)
       session_token = DmtdVbmappData.config[:auth_token]
 
       request['Authorization'] = "Token token=\"#{session_token}\""
@@ -86,6 +88,7 @@ module DmtdVbmappData
       request['X-ClientId'] = client_id unless client_id.nil?
       request['X-ClientCode'] = client_code unless client_code.nil?
       request['X-DocType'] = DmtdVbmappData.config[:document_type].downcase unless DmtdVbmappData.config[:document_type].nil?
+      request['Accept-Language'] = language unless language.nil?
     end
   end
 end

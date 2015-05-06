@@ -52,7 +52,7 @@ module DmtdVbmappData
     end
 
     def retrieve_vbmapp_index
-      response = RequestHelpers::get_authorized(end_point: Vbmapp::end_point, params: nil, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: Vbmapp::end_point, params: nil, client_id: @client.id, client_code: @client.code, languge: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

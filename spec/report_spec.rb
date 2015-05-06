@@ -17,19 +17,27 @@ module DmtdVbmappData
     end
 
     it 'can generate a report' do
-      resolver = proc { |var| 1}
-      report = AssessmentReport.new(client: client, &resolver)
+      prev_report_json = nil
 
-      report_json = report.iep
+      AVAILABLE_LANGUAGES.each do |language|
+        resolver = proc { |var| 1}
+        report = AssessmentReport.new(client: client, language: language, &resolver)
 
-      expect(report_json).to_not be nil
-      expect(report_json.is_a?(Array)).to be true
+        report_json = report.iep
 
-      report_json.each do |para|
-        expect(para.is_a?(Hash)).to be true
+        expect(report_json).to_not be nil
+        expect(report_json.is_a?(Array)).to be true
 
-        expect(para[:Style]).to_not be nil
-        expect(para[:Text]).to_not be nil
+        report_json.each do |para|
+          expect(para.is_a?(Hash)).to be true
+
+          expect(para[:Style]).to_not be nil
+          expect(para[:Text]).to_not be nil
+        end
+
+        expect(report_json).to_not eq(prev_report_json) unless prev_report_json.nil?
+
+        prev_report_json = report_json
       end
     end
 

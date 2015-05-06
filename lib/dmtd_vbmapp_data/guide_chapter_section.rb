@@ -28,7 +28,7 @@ module DmtdVbmappData
       index_json = opts.fetch(:section_index_json)
       @section_title = index_json[:sectionTitle]
       @section_short_title = index_json[:sectionShortTitle]
-      @subsection_count = index_json[:subsection_count]
+      @sub_sections_index = index_json[:subSections]
     end
 
     # Returns the content of the Guide's chapter section
@@ -42,9 +42,9 @@ module DmtdVbmappData
 
     # Returns the VB-MAPP Guide section's sub_sections
     def sub_sections
-      @sub_sections = (0..@subsection_count-1).map { |sub_section_num|
-        GuideSectionSubSection.new(client: client, chapter_num: chapter_num, section_num: section_num, sub_section_num: sub_section_num)
-      } if @sub_sections.nil?
+      @sub_sections = @sub_sections_index.map.with_index do |sub_section_index_json, sub_section_num|
+        GuideSectionSubSection.new(client: client, chapter_num: chapter_num, section_num: section_num, sub_section_num: sub_section_num, sub_section_index_json: sub_section_index_json)
+      end if @sub_sections.nil?
 
       @sub_sections
     end
@@ -60,7 +60,7 @@ module DmtdVbmappData
           chapter_num: chapter_num,
           section_num: section_num
       }
-      response = RequestHelpers::get_authorized(end_point: GuideChapterSection::end_point, params: params, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: GuideChapterSection::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

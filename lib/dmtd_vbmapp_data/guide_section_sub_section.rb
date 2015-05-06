@@ -9,6 +9,8 @@ module DmtdVbmappData
     attr_reader :chapter_num
     attr_reader :section_num
     attr_reader :sub_section_num
+    attr_reader :section_title
+    attr_reader :section_short_title
 
     # Creates an accessor for the VB-MAPP Guide Chapter Section on the VB-MAPP Data Server
     #
@@ -19,19 +21,16 @@ module DmtdVbmappData
     # +chapter_num+:: the number (index) of the chapter in the Guide's index array
     # +section_num+:: the number (index) of the section in the chapter's sections array
     # +sub_section_num+:: the number (index) of the sub_section in the range (0..subsection_count)
+    # +sub_section_index_json+:: the guide index json for the chapter
     def initialize(opts)
       @client = opts.fetch(:client)
       @chapter_num = opts.fetch(:chapter_num)
       @section_num = opts.fetch(:section_num)
       @sub_section_num = opts.fetch(:sub_section_num)
-    end
 
-    def section_title
-      retrieve_guide_sub_section[:sectionTitle]
-    end
-
-    def section_short_title
-      retrieve_guide_sub_section[:sectionShortTitle]
+      sub_section_index_json = opts.fetch(:sub_section_index_json)
+      @section_title = sub_section_index_json[:sectionTitle]
+      @section_short_title = sub_section_index_json[:sectionShortTitle]
     end
 
     # Returns the content of the Guide's chapter section
@@ -54,7 +53,7 @@ module DmtdVbmappData
             section_num: section_num,
             sub_section_num: sub_section_num
         }
-        response = RequestHelpers::get_authorized(end_point: GuideSectionSubSection::end_point, params: params, client_id: @client.id, client_code: @client.code)
+        response = RequestHelpers::get_authorized(end_point: GuideSectionSubSection::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
         proc_response = RequestHelpers::process_json_response(response)
         json = proc_response[:json]
         server_response_code = proc_response[:code]

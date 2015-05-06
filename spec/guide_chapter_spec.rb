@@ -13,10 +13,18 @@ module DmtdVbmappData
     end
 
     it 'can pull preamble' do
-      chapter_preamble = client.guide.chapters[0].chapter_preamble
+      prev_preamble = nil
 
-      expect(chapter_preamble).to_not be nil
-      expect(chapter_preamble.is_a?(String)).to eq(true)
+      AVAILABLE_LANGUAGES.each do |language|
+        chapter_preamble = client(language: language).guide.chapters[0].chapter_preamble
+
+        expect(chapter_preamble).to_not be nil
+        expect(chapter_preamble.is_a?(String)).to eq(true)
+
+        expect(chapter_preamble).to_not eq(prev_preamble) unless prev_preamble.nil?
+
+        prev_preamble = chapter_preamble
+      end
     end
 
     it 'has sections' do
@@ -47,8 +55,10 @@ module DmtdVbmappData
 
     private
 
-    def client
-      Client.new(id: 57)
+    def client(opts = {})
+      language = opts.fetch(:language, nil)
+
+      Client.new(id: 57, language: language)
     end
 
     def chapter_index_json

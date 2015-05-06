@@ -4,10 +4,19 @@ module DmtdVbmappData
 
   describe Client do
 
-    it 'can be created' do
+    it 'can be created without a language' do
       client = Client.new(date_of_birth: Date.today, gender: GENDER_MALE)
       expect(client).to_not be nil
       expect(client.server_response_code).to eq(200)
+    end
+
+    it 'can be created with language' do
+      AVAILABLE_LANGUAGES.each do |language|
+        client = Client.new(date_of_birth: Date.today, gender: GENDER_MALE, language: language)
+        expect(client).to_not be nil
+        expect(client.server_response_code).to eq(200)
+        expect(client.language).to eq(language)
+      end
     end
 
     it 'can retrieve existing clients' do

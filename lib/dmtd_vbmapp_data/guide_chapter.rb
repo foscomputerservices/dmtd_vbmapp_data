@@ -25,6 +25,7 @@ module DmtdVbmappData
       index_json = opts.fetch(:chapter_index_json)
       @chapter_title = index_json[:chapterTitle]
       @chapter_short_title = index_json[:chapterShortTitle]
+
       @sections_index = index_json[:sections]
     end
 
@@ -58,7 +59,7 @@ module DmtdVbmappData
       params = {
           chapter_num: chapter_num
       }
-      response = RequestHelpers::get_authorized(end_point: GuideChapter::end_point, params: params, client_id: @client.id, client_code: @client.code)
+      response = RequestHelpers::get_authorized(end_point: GuideChapter::end_point, params: params, client_id: @client.id, client_code: @client.code, language:client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]
