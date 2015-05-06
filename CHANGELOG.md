@@ -9,3 +9,11 @@
 ## 1.0.2
 
 * Added an AssessmentReport class that simplifies the functionality of generating an IEP report
+
+## 1.0.3
+
+* Added language support
+
+## 1.0.4
+
+* Implemented the Guide's caching support

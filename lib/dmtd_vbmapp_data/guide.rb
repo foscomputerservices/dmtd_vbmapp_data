@@ -19,20 +19,28 @@ module DmtdVbmappData
 
     # Populates the internal VB-MAPP guide index
     #
-    # This index is cached locally and expires once a day.
+    # This index is cached locally and expires once a day at midnight UTC.
     #
     # The first call to this method with an expired cache will
     # block until the cache is populated.  All subsequent calls
     # will load from the cache.
     #
+    # NOTE: The cache is an in-memory cache (not on-disc).  Thus, if the process is restarted,
+    #       the cache will be dropped.
+    #
     # Returns:
     # Array as defined as the result of the 1/guide/index REST api
     def index
-      if @guide_index.nil?
-        @guide_index = retrieve_guide_index
+
+      expire_cache
+      if defined?(@@guide_cache).nil?
+        @@guide_cache = {
+            datestamp: DateTime.now.new_offset(0).to_date,
+            guide_index: retrieve_guide_index
+        }
       end
 
-      @guide_index
+      @@guide_cache[:guide_index]
     end
 
     # Returns the VB-MAPP Guide chapters
@@ -48,6 +56,15 @@ module DmtdVbmappData
     end
 
     private
+
+    def expire_cache
+      if defined?(@@guide_cache)
+        today = DateTime.now.new_offset(0).to_date
+        cache_day = @@guide_cache[:datestamp]
+
+        @@guide_cache = nil unless cache_day == today
+      end
+    end
 
     def self.end_point
       '1/guide/index'
