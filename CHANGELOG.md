@@ -17,3 +17,7 @@
 ## 1.0.4
 
 * Implemented the Guide's caching support
+
+## 1.0.5
+
+* Implemented the VB-Mapp controller's caching support

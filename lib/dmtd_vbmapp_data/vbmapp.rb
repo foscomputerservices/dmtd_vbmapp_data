@@ -19,20 +19,28 @@ module DmtdVbmappData
 
     # Populates the internal VB-MAPP content index
     #
-    # This index is cached locally and expires once a day.
+    # This index is cached locally and expires once a day at midnight UTC.
     #
     # The first call to this method with an expired cache will
     # block until the cache is populated.  All subsequent calls
     # will load from the cache.
     #
+    # NOTE: The cache is an in-memory cache (not on-disc).  Thus, if the process is restarted,
+    #       the cache will be dropped.
+    #
     # Returns:
     # Array as defined as the result of the 1/guide/index REST api
     def index
-      if @vbmapp_index.nil?
-        @vbmapp_index = retrieve_vbmapp_index
+
+      expire_cache
+      if defined?(@@vbmapp_index_cache).nil?
+        @@vbmapp_index_cache = {
+            datestamp: DateTime.now.new_offset(0).to_date,
+            vbmapp_index: retrieve_vbmapp_index
+        }
       end
 
-      @vbmapp_index
+      @@vbmapp_index_cache[:vbmapp_index]
     end
 
     # Returns the VB-MAPP Areas
@@ -46,6 +54,15 @@ module DmtdVbmappData
     end
 
     private
+
+    def expire_cache
+      if defined?(@@vbmapp_index_cache)
+        today = DateTime.now.new_offset(0).to_date
+        cache_day = @@vbmapp_index_cache[:datestamp]
+
+        @@vbmapp_index_cache = nil unless cache_day == today
+      end
+    end
 
     def self.end_point
       '1/vbmapp/index'
