@@ -10,13 +10,6 @@ module DmtdVbmappData
       expect(Vbmapp.new(client: client)).to_not be nil
     end
 
-    it 'can pull the index' do
-      vbmapp = Vbmapp.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE))
-
-      expect(vbmapp.index).to_not be nil
-      expect(vbmapp.index.is_a?(Array)).to eq(true)
-    end
-
     it 'can provide areas' do
       vbmapp = Vbmapp.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE))
 

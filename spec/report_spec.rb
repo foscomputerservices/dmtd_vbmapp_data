@@ -21,9 +21,7 @@ module DmtdVbmappData
 
       AVAILABLE_LANGUAGES.each do |language|
         resolver = proc { |var| 1}
-        report = AssessmentReport.new(client: client, language: language, &resolver)
-
-        report_json = report.iep
+        report_json = client(language: language).iep_report(&resolver)
 
         expect(report_json).to_not be nil
         expect(report_json.is_a?(Array)).to be true
@@ -43,8 +41,10 @@ module DmtdVbmappData
 
     private
 
-    def client
-      Client.new(id: 57)
+    def client(opts = {})
+      language = opts.fetch(:language, nil)
+
+      Client.new(id: 57, language: language)
     end
   end
 

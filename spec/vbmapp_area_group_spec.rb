@@ -30,12 +30,24 @@ module DmtdVbmappData
     end
 
     it 'can filter questions by level' do
-      questions = client.vbmapp.areas[0].groups[0].questions(level: 'level3')
+      AVAILABLE_LANGUAGES.each do |language|
+        group = client(language: language).vbmapp.areas[0].groups[0]
 
-      expect(questions).to_not be nil
+        if group.area == 'milestones'
+          expect(group.levels.size).to eq(3)
+        else
+          expect(group.levels.size).to eq(0)
+        end
 
-      questions.each do |question|
-        expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+        group.levels.each do |level|
+          questions = group.questions(level: level)
+
+          expect(questions).to_not be nil
+
+          questions.each do |question|
+            expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+          end
+        end
       end
     end
 

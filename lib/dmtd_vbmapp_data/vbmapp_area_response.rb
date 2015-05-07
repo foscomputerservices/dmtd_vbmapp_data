@@ -12,11 +12,12 @@ module DmtdVbmappData
 
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
-    # This method does *not* block, simply creates an accessor and returns
+    # @note This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +area+:: the vbmapp area
-    # +response_json+:: the response's json
+    # @option opts [Client] :client A client instance
+    # @option opts [String] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
+    # @option opts [Hash]   :response_json The vbmapp question json for the question in the format described at
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/vbmapp/area_question - GET REST api - response}
     def initialize(opts)
       @area = opts.fetch(:area)
 

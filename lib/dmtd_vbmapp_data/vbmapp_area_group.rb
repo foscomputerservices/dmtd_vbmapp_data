@@ -11,12 +11,12 @@ module DmtdVbmappData
 
     # Creates an accessor for the VB-MAPP Area Group on the VB-MAPP Data Server
     #
-    # This method does *not* block, simply creates an accessor and returns
+    # @note This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +client+:: a client instance
-    # +area+:: the vbmapp area of the group
-    # +group_index_json+:: the vbmapp index json for the group
+    # @option opts [Client] :client A client instance
+    # @option opts [String] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
+    # @option opts [Hash]   :group_index_json The vbmapp index json for the group in the format described at
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710543 /1/vbmapp/index - GET REST api - Group Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @area = opts.fetch(:area)
@@ -27,26 +27,23 @@ module DmtdVbmappData
       @levels = index_json[:levels]
     end
 
-    # Returns the content of the Guide's chapter section
+    # @note This method *does* block as the content is retrieved
     #
-    # This method *does* block as the content is retrieved
+    # @option opts [String | Symbol] :level Filters the questions to the given level (may be null)
     #
-    # +level+:: filters the questions to the given level (may be null)
+    # @return [Array<VbmappAreaQuestion>] all of the area group's {VbmappAreaQuestion} instances
     def questions(opts = {})
       level_name = opts.fetch(:level, nil)
 
-      if @questions.nil?
-        questions_json = retrieve_questions_json
-
-        @questions = questions_json.map {|question_json|
-          VbmappAreaQuestion.new(client: client, area: area, group: group, question_json: question_json)
-        }
-      end
+      @questions = retrieve_questions_json.map do |question_json|
+        VbmappAreaQuestion.new(client: client, area: area, group: group, question_json: question_json)
+      end if @questions.nil?
 
       if level_name.nil?
         result = @questions
       else
-        level_desc = @levels.select {|level| level[:level] == level_name}[0]
+        level_str = level_name.to_s
+        level_desc = @levels.select {|level| level[:level].to_s == level_str}[0]
         start_num = level_desc[:start_question_num] + 1 # question_number is 1-based
         end_num = start_num + level_desc[:question_count]
 
@@ -56,13 +53,11 @@ module DmtdVbmappData
       result
     end
 
-    # Returns the VB-MAPP Guide section's sub_sections
+    # @note This method does *not* block
+    #
+    # @return [Symbol] all of the area group's levels
     def levels
-      @levels = @levels.map { |sub_section_num|
-        VbmappAreaLevel.new(client: client, area: area, group: section_num, sub_section_num: sub_section_num)
-      } if @levels.nil?
-
-      @levels
+      @levels.map {|level_json| level_json[:level].to_sym }
     end
 
     private

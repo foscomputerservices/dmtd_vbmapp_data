@@ -11,27 +11,30 @@ module DmtdVbmappData
     #
     # This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +client+:: a client instance
+    # @option opts [Client] :client A client instance
     def initialize(opts)
       @client = opts.fetch(:client)
     end
 
-    # Populates the internal VB-MAPP guide index
+    # @note The first call to this method with an expired cache will
+    #    block until the cache is populated.  All subsequent calls
+    #    will load from the cache.
     #
-    # This index is cached locally and expires once a day at midnight UTC.
+    # @note The cache is an in-memory cache (not on-disc).  Thus, if the process is restarted,
+    #    the cache will be dropped.  Additionally this cache expires once a day at midnight UTC.
     #
-    # The first call to this method with an expired cache will
-    # block until the cache is populated.  All subsequent calls
-    # will load from the cache.
-    #
-    # NOTE: The cache is an in-memory cache (not on-disc).  Thus, if the process is restarted,
-    #       the cache will be dropped.
-    #
-    # Returns:
-    # Array as defined as the result of the 1/guide/index REST api
-    def index
+    # @return [Array<GuideChapter>] The entire set of {GuideChapter} instances
+    def chapters
+      @chapters = index.map.with_index do |chapter_json, chapter_num|
+        GuideChapter.new(client: client, chapter_num: chapter_num, chapter_index_json: chapter_json)
+      end if @chapters.nil?
 
+      @chapters
+    end
+
+    private
+
+    def index
       expire_cache
       if defined?(@@guide_cache).nil?
         @@guide_cache = {
@@ -42,20 +45,6 @@ module DmtdVbmappData
 
       @@guide_cache[:guide_index]
     end
-
-    # Returns the VB-MAPP Guide chapters
-    #
-    # Note that this method calls +index+. See that method for
-    # its blocking characteristics.
-    def chapters
-      @chapters = index.map.with_index do |chapter_json, chapter_num|
-        GuideChapter.new(client: client, chapter_num: chapter_num, chapter_index_json: chapter_json)
-      end if @chapters.nil?
-
-      @chapters
-    end
-
-    private
 
     def expire_cache
       if defined?(@@guide_cache)

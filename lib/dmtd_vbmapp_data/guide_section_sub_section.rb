@@ -14,14 +14,14 @@ module DmtdVbmappData
 
     # Creates an accessor for the VB-MAPP Guide Chapter Section on the VB-MAPP Data Server
     #
-    # This method does *not* block, simply creates an accessor and returns
+    # @note This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +client+:: a client instance
-    # +chapter_num+:: the number (index) of the chapter in the Guide's index array
-    # +section_num+:: the number (index) of the section in the chapter's sections array
-    # +sub_section_num+:: the number (index) of the sub_section in the range (0..subsection_count)
-    # +sub_section_index_json+:: the guide index json for the chapter
+    # @option opts [Client] :client A client instance
+    # @option opts [Integer] :chapter_num The number (index 0..n) of the chapter in the Guide's index array
+    # @option opts [Integer] :section_num The number (index 0..n) of the section in the chapter's sections array
+    # @option opts [Integer] :sub_section_num The number (index 0..n) of the subSection in section's subSections array
+    # @option opts [Hash] :sub_section_index_json The guide index json for the subSection in the format described at
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710558 1/guide/index REST api - SubSection Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @chapter_num = opts.fetch(:chapter_num)
@@ -33,9 +33,9 @@ module DmtdVbmappData
       @section_short_title = sub_section_index_json[:sectionShortTitle]
     end
 
-    # Returns the content of the Guide's chapter section
+    # @note This method *does* block as the content is retrieved
     #
-    # This method *does* block as the content is retrieved
+    # @return [String] The content of the Guide's sub section
     def section_content
       retrieve_guide_sub_section[:sectionContent]
     end

@@ -18,6 +18,9 @@
 
 * Implemented the Guide's caching support
 
-## 1.0.5
+## 1.1.0
 
 * Implemented the VB-Mapp controller's caching support
+* Completely reworked the documentation to be 'yard'-style format
+* Privatized the 'index' methods on guide & vbmapp as they really aren't needed publicly
+* Minor bug fixes 

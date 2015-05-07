@@ -15,13 +15,13 @@ module DmtdVbmappData
 
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
-    # This method does *not* block, simply creates an accessor and returns
+    # @note This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +client+:: a client instance
-    # +area+:: the vbmapp area
-    # +group+:: the vbmapp area group name
-    # +question_json+:: The JSON that describes a VB-MAPP area question
+    # @option opts [Client] :client A client instance
+    # @option opts [String] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
+    # @option opts [String] :group The vbmapp area group name (i.e. 'mand', 'tact', 'group1', etc.)
+    # @option opts [Hash]   :question_json The vbmapp question json for the question in the format described at
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/vbmapp/area_question - GET REST api - Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @area = opts.fetch(:area)
@@ -36,7 +36,9 @@ module DmtdVbmappData
       @responses_json_array = question_json[:responses]
     end
 
-    # Returns the VB-MAPP question's possible responses.
+    # @note This method does *not* block.
+    #
+    # @return [Array<VbmappAreaResponse>] all of the VB-MAPP question's possible responses
     def responses
       if @responses.nil?
 
@@ -47,12 +49,6 @@ module DmtdVbmappData
           @responses = @responses_json_array.map { |response_json| VbmappAreaResponse.new(area: area, response_json: response_json) }
         end
       end
-
-      # @levels = @levels.map { |sub_section_num|
-      #   GuideSectionSubSection.new(client: client, chapter_num: chapter_num, section_num: section_num, sub_section_num: sub_section_num)
-      # } if @levels.nil?
-      #
-      # @levels
 
       @responses
     end

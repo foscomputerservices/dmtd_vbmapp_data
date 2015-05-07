@@ -12,12 +12,12 @@ module DmtdVbmappData
 
     # Creates an accessor for the VB-MAPP Guide Chapter on the VB-MAPP Data Server
     #
-    # This method does *not* block, simply creates an accessor and returns
+    # @note This method does *not* block, simply creates an accessor and returns
     #
-    # Params:
-    # +client+:: a client instance
-    # +chapter_num+:: the number (index) of the chapter in the Guide's index array
-    # +chapter_index_json+:: the guide index json for the chapter
+    # @option opts [Client] :client A client instance
+    # @option opts [Integer] :chapter_num The number (index 0..n) of the chapter in the Guide's index array
+    # @option opts [Hash] :chapter_index_json The guide index json for the chapter in the format described at
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710558 1/guide/index REST api - Chapter Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @chapter_num = opts.fetch(:chapter_num)
@@ -29,18 +29,18 @@ module DmtdVbmappData
       @sections_index = index_json[:sections]
     end
 
-    # Returns the preamble of the Guide's chapter
+    # @note This method *does* block as the content is retrieved
     #
-    # This method *does* block as the content is retrieved
+    # @return [String] The preamble of the Guide's chapter
     def chapter_preamble
       @chapter_preamble = retrieve_guide_chapter[:chapterPreamble] if @chapter_preamble.nil?
 
       @chapter_preamble
     end
 
-    # Returns the VB-MAPP Guide chapter sections
+    # @note This method does *not* block
     #
-    # This method does *not* block on server access
+    # @return [Array<GuideChapterSection>] all of the the VB-MAPP Guide's {GuideChapterSection} instances
     def sections
       @sections = @sections_index.map.with_index { |section_index_json, section_num|
         GuideChapterSection.new(client: client, chapter_num: chapter_num, section_num: section_num, section_index_json: section_index_json)
