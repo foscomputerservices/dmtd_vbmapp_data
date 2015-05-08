@@ -33,6 +33,22 @@ module DmtdVbmappData
       end
     end
 
+    it 'has guide content' do
+      client.vbmapp.areas.each do |area|
+        area.groups.each do |group|
+          group.questions.each do |question|
+            if area.area == :eesa
+              expect(question.guide_content).to be nil
+            else
+              expect(question.guide_content).to_not be nil
+              expect(question.guide_content.is_a?(VbmappGuideContent)).to be true
+            end
+
+          end
+        end
+      end
+    end
+
     it 'has responses' do
       client.vbmapp.areas.each do |area|
         area.groups.each do |group|
@@ -48,8 +64,8 @@ module DmtdVbmappData
               expect(response.score).to_not be nil
               expect(response.text).to_not be nil
               expect(response.text.is_a?(String)).to be true
-              expect(response.description).to_not be nil if area.area.to_sym == :milestones || area.area.to_sym == :barriers
-              expect(response.description.is_a?(String)).to be true if area.area.to_sym == :milestones || area.area.to_sym == :barriers
+              expect(response.description).to_not be nil if area.area == :milestones || area.area == :barriers
+              expect(response.description.is_a?(String)).to be true if area.area == :milestones || area.area == :barriers
             end
           end
         end

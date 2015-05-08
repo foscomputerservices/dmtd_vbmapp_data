@@ -49,11 +49,20 @@ module DmtdVbmappData
 
       question_json = opts.fetch(:question_json)
       @example = question_json[:example]
-      @guide_content = question_json[:guideContent]
+      @guide_content_json = question_json[:guideContent]
       @materials = question_json[:materials]
       @question_number = question_json[:questionNumber].to_i
       @question_text = question_json[:questionText]
       @responses_json_array = question_json[:responses]
+    end
+
+    # @note This method does *not* block.
+    #
+    # @return [VbmappGuideContent] (may be nil)
+    def guide_content
+      @guide_content = VbmappGuideContent.new(guide_content_json: @guide_content_json) if @guide_content.nil? && !@guide_content_json.nil?
+
+      @guide_content
     end
 
     # @note This method does *not* block.

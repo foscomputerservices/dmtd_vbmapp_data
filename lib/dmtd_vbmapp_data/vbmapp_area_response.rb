@@ -2,7 +2,7 @@ require 'dmtd_vbmapp_data/request_helpers'
 
 module DmtdVbmappData
 
-  # Provides for the retrieving of VB-MAPP Guide chapter sections from the VB-MAPP Data Server.
+  # Provides for the retrieving of VB-MAPP Guide responses from the VB-MAPP Data Server.
   class VbmappAreaResponse
 
     # @!attribute [r] area
