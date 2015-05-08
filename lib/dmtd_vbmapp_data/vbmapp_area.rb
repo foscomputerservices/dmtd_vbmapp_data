@@ -5,7 +5,12 @@ module DmtdVbmappData
   # Provides for the retrieving of VB-MAPP area information from the VB-MAPP Data Server.
   class VbmappArea
 
+    # @!attribute [r] client
+    #   @return [Client] the associated client
     attr_reader :client
+
+    # @!attribute [r] area
+    #   @return [Symbol] the area of the question (e.g. :milestones, :barriers, :transitions, :eesa)
     attr_reader :area
 
     # Creates an accessor for the VB-MAPP Guide Chapter on the VB-MAPP Data Server
@@ -19,7 +24,7 @@ module DmtdVbmappData
       @client = opts.fetch(:client)
 
       index_json = opts.fetch(:area_index_json)
-      @area = index_json[:area]
+      @area = index_json[:area].to_sym
       @groups_index = index_json[:groups]
     end
 
@@ -27,9 +32,9 @@ module DmtdVbmappData
     #
     # @return [Array<VbmappAreaGroup>] all of the VB-Mapp's {VbmappAreaGroup} instances
     def groups
-      @groups = @groups_index.map.with_index { |group_index_json, group_num|
+      @groups = @groups_index.map.with_index do |group_index_json, group_num|
         VbmappAreaGroup.new(client: client, area: area, group_index_json: group_index_json)
-      } if @groups.nil?
+      end if @groups.nil?
 
       @groups
     end

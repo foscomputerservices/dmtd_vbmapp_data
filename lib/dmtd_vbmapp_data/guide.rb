@@ -5,6 +5,8 @@ module DmtdVbmappData
   # Provides for the retrieving of VB-MAPP Guide content from the VB-MAPP Data Server.
   class Guide
 
+    # @!attribute [r] client
+    #   @return [Client] the associated client
     attr_reader :client
 
     # Creates an accessor for the VB-MAPP Guide on the VB-MAPP Data Server

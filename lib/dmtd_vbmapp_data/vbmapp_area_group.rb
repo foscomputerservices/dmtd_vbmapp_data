@@ -5,8 +5,16 @@ module DmtdVbmappData
   # Provides for the retrieving of VB-MAPP Guide chapter sections from the VB-MAPP Data Server.
   class VbmappAreaGroup
 
+    # @!attribute [r] client
+    #   @return [Client] the associated client
     attr_reader :client
+
+    # @!attribute [r] area
+    #   @return [Symbol] the area of the question (e.g. :milestones, :barriers, :transitions, :eesa)
     attr_reader :area
+
+    # @!attribute [r] group
+    #   @return [Symbol] the group of the question (e.g. :mand, :tact, :group1, etc.)
     attr_reader :group
 
     # Creates an accessor for the VB-MAPP Area Group on the VB-MAPP Data Server
@@ -14,15 +22,15 @@ module DmtdVbmappData
     # @note This method does *not* block, simply creates an accessor and returns
     #
     # @option opts [Client] :client A client instance
-    # @option opts [String] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
+    # @option opts [String | Symbol] :area The vbmapp area of the group (:milestones, :barriers, :transitions', :eesa)
     # @option opts [Hash]   :group_index_json The vbmapp index json for the group in the format described at
     #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710543 /1/vbmapp/index - GET REST api - Group Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
-      @area = opts.fetch(:area)
+      @area = opts.fetch(:area).to_sym
 
       index_json = opts.fetch(:group_index_json)
-      @group = index_json[:group]
+      @group = index_json[:group].to_sym
       @question_count = index_json[:question_count]
       @levels = index_json[:levels]
     end

@@ -25,9 +25,11 @@ module DmtdVbmappData
     #
     # @return [Array<VbmappArea>] The entire set of {VbmappArea} instances
     def areas
-      @areas = index.map do |area_index_json|
+      index_array = index
+
+      @areas = index_array.map do |area_index_json|
         VbmappArea.new(client: client, area_index_json: area_index_json)
-      end if @areas.nil?
+      end if @areas.nil? && index_array.is_a?(Array)
 
       @areas
     end
@@ -38,19 +40,22 @@ module DmtdVbmappData
 
       expire_cache
       if defined?(@@vbmapp_index_cache).nil?
+        index = retrieve_vbmapp_index
         @@vbmapp_index_cache = {
-            datestamp: DateTime.now.new_offset(0).to_date,
-            vbmapp_index: retrieve_vbmapp_index
-        }
-      end
+            date_stamp: DateTime.now.new_offset(0).to_date,
+            vbmapp_index: index
+        } if index.is_a?(Array) # Only if we got a response
 
-      @@vbmapp_index_cache[:vbmapp_index]
+        index
+      else
+        @@vbmapp_index_cache[:vbmapp_index]
+      end
     end
 
     def expire_cache
       if defined?(@@vbmapp_index_cache)
         today = DateTime.now.new_offset(0).to_date
-        cache_day = @@vbmapp_index_cache[:datestamp]
+        cache_day = @@vbmapp_index_cache[:date_stamp]
 
         @@vbmapp_index_cache = nil unless cache_day == today
       end

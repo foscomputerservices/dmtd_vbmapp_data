@@ -7,8 +7,8 @@ module DmtdVbmappData
     it 'can be created' do
       question = VbmappAreaQuestion.new(client: client, area: 'milestones', group: 'mand', question_json: question_json)
       expect(question).to_not be nil
-      expect(question.area).to eq('milestones')
-      expect(question.group).to eq('mand')
+      expect(question.area).to eq(:milestones)
+      expect(question.group).to eq(:mand)
       expect(question.example).to eq(question_json[:example])
       expect(question.materials).to eq(question_json[:materials])
       expect(question.question_number).to eq(question_json[:questionNumber])

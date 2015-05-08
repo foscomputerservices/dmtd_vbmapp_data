@@ -8,8 +8,8 @@ module DmtdVbmappData
       group = VbmappAreaGroup.new(client: client, area: 'milestones', group_index_json: group_index_json)
 
       expect(group).to_not be nil
-      expect(group.area).to eq('milestones')
-      expect(group.group).to eq('group1')
+      expect(group.area).to eq(:milestones)
+      expect(group.group).to eq(:group)
     end
 
     it 'has questions' do
@@ -33,7 +33,7 @@ module DmtdVbmappData
       AVAILABLE_LANGUAGES.each do |language|
         group = client(language: language).vbmapp.areas[0].groups[0]
 
-        if group.area == 'milestones'
+        if group.area == :milestones
           expect(group.levels.size).to eq(3)
         else
           expect(group.levels.size).to eq(0)
@@ -61,7 +61,7 @@ module DmtdVbmappData
 
     def group_index_json
       {
-          group: 'group1',
+          group: 'group',
           question_count: 0
       }
     end

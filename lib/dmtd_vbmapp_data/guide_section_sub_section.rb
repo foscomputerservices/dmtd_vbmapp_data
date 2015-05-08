@@ -5,11 +5,28 @@ module DmtdVbmappData
   # Provides for the retrieving of VB-MAPP Guide section sub_sections from the VB-MAPP Data Server.
   class GuideSectionSubSection
 
+    # @!attribute [r] client
+    #   @return [Client] the associated client
     attr_reader :client
+
+    # @!attribute [r] chapter_num
+    #   @return [Integer] the number of the chapter (0..n)
     attr_reader :chapter_num
+
+    # @!attribute [r] section_num
+    #   @return [Integer] the number of the section (0..n)
     attr_reader :section_num
+
+    # @!attribute [r] sub_section_num
+    #   @return [Integer] the number of the sub-section (0..n)
     attr_reader :sub_section_num
+
+    # @!attribute [r] section_title
+    #   @return [String] the title of the sub-section
     attr_reader :section_title
+
+    # @!attribute [r] section_short_title
+    #   @return [String] an abbreviated title for the sub-section
     attr_reader :section_short_title
 
     # Creates an accessor for the VB-MAPP Guide Chapter Section on the VB-MAPP Data Server
@@ -24,9 +41,9 @@ module DmtdVbmappData
     #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710558 1/guide/index REST api - SubSection Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
-      @chapter_num = opts.fetch(:chapter_num)
-      @section_num = opts.fetch(:section_num)
-      @sub_section_num = opts.fetch(:sub_section_num)
+      @chapter_num = opts.fetch(:chapter_num).to_i
+      @section_num = opts.fetch(:section_num).to_i
+      @sub_section_num = opts.fetch(:sub_section_num).to_i
 
       sub_section_index_json = opts.fetch(:sub_section_index_json)
       @section_title = sub_section_index_json[:sectionTitle]

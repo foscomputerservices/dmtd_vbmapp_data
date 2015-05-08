@@ -8,16 +8,51 @@ module DmtdVbmappData
   # Provides for the creating and retrieving of client instances in the VB-MAPP Data Server.
   class Client
 
+    # @!attribute [r] client
+    #   @return [Client] the associated client
+
+    # @!attribute [r] id
+    #   @return [Integer] a unique identifier for this client
     attr_reader :id
+
+    # @!attribute [r] organization_id
+    #   @return [Integer] a unique identifier for the organization that owns the client
     attr_reader :organization_id
+
+    # @!attribute [r] code
+    #   @return [String] a code that can be used to refer to the client; possibly a key in the customer's database (may be nil)
     attr_reader :code
+
+    # @!attribute [r] date_of_birth
+    #   @return [Date] the date of birth of the client
     attr_reader :date_of_birth
+
+    # @!attribute [r] first_name
+    #   @return [String] the first name of the client
     attr_reader :first_name
+
+    # @!attribute [r] last_name
+    #   @return [String] the last name of the client
     attr_reader :last_name
+
+    # @!attribute [r] settings
+    #   @return [String]
     attr_reader :settings
+
+    # @!attribute [r] created_at
+    #   @return [DateTime] the UTC time at which the client was created
     attr_reader :created_at
+
+    # @!attribute [r] updated_at
+    #   @return [DateTime] the UTC time at which the client was last updated
     attr_reader :updated_at
+
+    # @!attribute [r] server_response_code
+    #   @return [Integer] the response code from the server; 200 == OK
     attr_reader :server_response_code
+
+    # @!attribute [r] language
+    #   @return [String] the language in which to retrieve the information for the client
     attr_reader :language
 
     # Creates a new client on the VB-MAPP Data Server
@@ -45,10 +80,13 @@ module DmtdVbmappData
     # @option opts [String] :settings A string value that can be associated with the client (may be nil)
     # @option opts [String] :language The language to use (i.e. 'en', 'es' or may be nil) @see #DmtdVbmappData.AVAILABLE_LANGUAGES
     def initialize(opts)
-      @date_of_birth = opts.fetch(:date_of_birth, nil)
-      @gender = opts.fetch(:gender, nil)
-      @id = opts.fetch(:id, nil)
-      @organization_id = opts.fetch(:organization_id, DmtdVbmappData.config[:organization_id])
+      dob = opts.fetch(:date_of_birth, nil)
+      @date_of_birth = dob ? (dob.is_a?(String) ? DateTime.parse(dob) : dob.to_date) : nil
+      @gender = opts.fetch(:gender, nil) ? opts.fetch(:gender).to_i : nil
+
+      id = opts.fetch(:id, nil)
+      @id = id.nil? ? nil : id.to_i
+      @organization_id = opts.fetch(:organization_id, DmtdVbmappData.config[:organization_id]).to_i
       @code = opts.fetch(:code, nil)
       @first_name = opts.fetch(:first_name, nil)
       @last_name = opts.fetch(:last_name, nil)
@@ -56,9 +94,13 @@ module DmtdVbmappData
       @server_response_code = opts.fetch(:server_response_code, 200)
       @language = opts.fetch(:language, nil)
 
-      date = Time.now.utc.to_date
-      @created_at = opts.fetch(:created_at, date)
-      @updated_at = opts.fetch(:updated_at, date)
+      date_now = DateTime.now.new_offset(0)
+
+      created_at = opts.fetch(:created_at, date_now)
+      @created_at = created_at.is_a?(String) ? DateTime.parse(created_at) : created_at
+
+      updated_at = opts.fetch(:updated_at, date_now)
+      @updated_at = updated_at.is_a?(String) ? DateTime.parse(updated_at) : updated_at
 
       create_server_client if is_valid_for_create?
     end

@@ -7,7 +7,7 @@ module DmtdVbmappData
     it 'can be created' do
       area = VbmappArea.new(client: client, area_index_json: area_index_json)
       expect(area).to_not be nil
-      expect(area.area).to eq('milestones')
+      expect(area.area).to eq(:milestones)
     end
 
     it 'has areas' do

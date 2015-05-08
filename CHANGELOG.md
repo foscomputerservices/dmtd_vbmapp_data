@@ -23,4 +23,8 @@
 * Implemented the VB-Mapp controller's caching support
 * Completely reworked the documentation to be 'yard'-style format
 * Privatized the 'index' methods on guide & vbmapp as they really aren't needed publicly
-* Minor bug fixes 
+* Minor bug fixes
+ 
+## 1.1.1
+ 
+* Standardized all type key attr_readers (i.e. chapter, section, sub_section, area, group, etc.) to return symbols instead of strings 
