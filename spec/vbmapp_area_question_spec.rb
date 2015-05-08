@@ -27,6 +27,9 @@ module DmtdVbmappData
         questions.each do |question|
           expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
 
+          expect(question.definition).to_not be nil
+          expect(question.materials).to_not be nil if question.area == :milestones
+          expect(question.objective).to_not be nil
           expect(question.question_number).to_not be nil
           expect(question.question_text).to_not be nil
           expect(question.question_title).to_not be nil if question.area == :barriers || question.area == :transitions
@@ -35,22 +38,6 @@ module DmtdVbmappData
         expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
 
         prev_questions = questions
-      end
-    end
-
-    it 'has guide content' do
-      client.vbmapp.areas.each do |area|
-        area.groups.each do |group|
-          group.questions.each do |question|
-            if area.area == :eesa
-              expect(question.guide_content).to be nil
-            else
-              expect(question.guide_content).to_not be nil
-              expect(question.guide_content.is_a?(VbmappGuideContent)).to be true
-            end
-
-          end
-        end
       end
     end
 

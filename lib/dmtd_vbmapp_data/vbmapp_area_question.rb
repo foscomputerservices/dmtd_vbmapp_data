@@ -17,6 +17,10 @@ module DmtdVbmappData
     #   @return [Symbol] the group of the question (e.g. :mand, :tact, :group1, etc.)
     attr_reader :group
 
+    # @!attribute [r] definition
+    #   @return [String] the formal definition for the question
+    attr_reader :definition
+
     # @!attribute [r] example
     #   @return [String] an example of administering the question
     attr_reader :example
@@ -24,6 +28,10 @@ module DmtdVbmappData
     # @!attribute [r] materials
     #   @return [String] the materials required to administer the question
     attr_reader :materials
+
+    # @!attribute [r] objective
+    #   @return [String] The objective of the question
+    attr_reader :objective
 
     # @!attribute [r] question_number
     #   @return [Integer] the question number (0...n)
@@ -36,6 +44,10 @@ module DmtdVbmappData
     # @!attribute [r] question_title
     #   @return [String] a title to display at the top of a grid column
     attr_reader :question_title
+
+    # @!attribute [r] objective
+    #   @return [String] The objective of the question
+    attr_reader :objective
 
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
@@ -50,24 +62,18 @@ module DmtdVbmappData
       @client = opts.fetch(:client)
       @area = opts.fetch(:area).to_sym
       @group = opts.fetch(:group).to_sym
-
       question_json = opts.fetch(:question_json)
-      @example = question_json[:example]
-      @guide_content_json = question_json[:guideContent]
-      @materials = question_json[:materials]
+
+      guide_content_json = question_json[:guideContent] || {}
+      @definition = guide_content_json[:definition] || ''
+      @objective = guide_content_json[:objective] || ''
+
+      @example = question_json[:example] || guide_content_json[:examples]
+      @materials = question_json[:materials] || guide_content_json[:materials]
       @question_number = question_json[:questionNumber].to_i
       @question_text = question_json[:questionText]
-      @question_title = question_json[:questionTitle]
+      @question_title = question_json[:questionTitle] || guide_content_json[:title]
       @responses_json_array = question_json[:responses]
-    end
-
-    # @note This method does *not* block.
-    #
-    # @return [VbmappGuideContent] (may be nil)
-    def guide_content
-      @guide_content = VbmappGuideContent.new(guide_content_json: @guide_content_json) if @guide_content.nil? && !@guide_content_json.nil?
-
-      @guide_content
     end
 
     # @note This method does *not* block.

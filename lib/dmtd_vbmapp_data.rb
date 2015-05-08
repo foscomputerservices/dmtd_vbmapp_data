@@ -16,7 +16,6 @@ require 'dmtd_vbmapp_data/vbmapp_area'
 require 'dmtd_vbmapp_data/vbmapp_area_group'
 require 'dmtd_vbmapp_data/vbmapp_area_question'
 require 'dmtd_vbmapp_data/vbmapp_area_response'
-require 'dmtd_vbmapp_data/vbmapp_guide_content'
 
 require 'dmtd_vbmapp_data/assessment_report'
 
