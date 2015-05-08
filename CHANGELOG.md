@@ -27,4 +27,8 @@
  
 ## 1.1.1
  
-* Standardized all type key attr_readers (i.e. chapter, section, sub_section, area, group, etc.) to return symbols instead of strings 
+* Standardized all type key attr_readers (i.e. chapter, section, sub_section, area, group, etc.) to return symbols instead of strings
+ 
+## 1.1.2
+
+* Added VbmappAreaQuestion fields: definition, objective, question_title 

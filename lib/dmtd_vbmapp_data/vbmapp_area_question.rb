@@ -45,10 +45,6 @@ module DmtdVbmappData
     #   @return [String] a title to display at the top of a grid column
     attr_reader :question_title
 
-    # @!attribute [r] objective
-    #   @return [String] The objective of the question
-    attr_reader :objective
-
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
     # @note This method does *not* block, simply creates an accessor and returns
