@@ -33,6 +33,10 @@ module DmtdVbmappData
     #   @return [String] the text of the question itself
     attr_reader :question_text
 
+    # @!attribute [r] question_title
+    #   @return [String] a title to display at the top of a grid column
+    attr_reader :question_title
+
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
     # @note This method does *not* block, simply creates an accessor and returns
@@ -53,6 +57,7 @@ module DmtdVbmappData
       @materials = question_json[:materials]
       @question_number = question_json[:questionNumber].to_i
       @question_text = question_json[:questionText]
+      @question_title = question_json[:questionTitle]
       @responses_json_array = question_json[:responses]
     end
 

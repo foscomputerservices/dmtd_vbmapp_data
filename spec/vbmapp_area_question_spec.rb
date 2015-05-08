@@ -13,6 +13,7 @@ module DmtdVbmappData
       expect(question.materials).to eq(question_json[:materials])
       expect(question.question_number).to eq(question_json[:questionNumber])
       expect(question.question_text).to eq(question_json[:questionText])
+      expect(question.question_title).to eq(question_json[:questionTitle])
     end
 
     it 'has questions' do
@@ -25,6 +26,10 @@ module DmtdVbmappData
 
         questions.each do |question|
           expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+
+          expect(question.question_number).to_not be nil
+          expect(question.question_text).to_not be nil
+          expect(question.question_title).to_not be nil if question.area == :barriers || question.area == :transitions
         end
 
         expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
@@ -66,6 +71,10 @@ module DmtdVbmappData
               expect(response.text.is_a?(String)).to be true
               expect(response.description).to_not be nil if area.area == :milestones || area.area == :barriers
               expect(response.description.is_a?(String)).to be true if area.area == :milestones || area.area == :barriers
+
+              expect(response.score).to be_between(0, 1) if area.area == :milestones || area.area == :eesa
+              expect(response.score).to be >= 0 if area.area == :barriers
+              expect(response.score).to be > 0 if area.area == :transitions
             end
           end
         end
@@ -87,6 +96,7 @@ module DmtdVbmappData
           materials: 'wood',
           questionNumber: 0,
           questionText: 'what is this?',
+          questionTitle: 'a title??',
           questionType: '',
           responses: []
       }
