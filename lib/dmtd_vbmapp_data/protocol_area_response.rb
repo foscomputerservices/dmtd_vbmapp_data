@@ -2,8 +2,8 @@ require 'dmtd_vbmapp_data/request_helpers'
 
 module DmtdVbmappData
 
-  # Provides for the retrieving of VB-MAPP Guide responses from the VB-MAPP Data Server.
-  class VbmappAreaResponse
+  # Provides for the retrieving of VB-MAPP Protocol Area responses from the VB-MAPP Data Server.
+  class ProtocolAreaResponse
 
     # @!attribute [r] area
     #   @return [Symbol] the area of the question (e.g. :milestones, :barriers, :transitions, :eesa)
@@ -27,7 +27,7 @@ module DmtdVbmappData
     #
     # @option opts [String | Symbol] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
     # @option opts [Hash]   :response_json The vbmapp question json for the question in the format described at
-    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/vbmapp/area_question - GET REST api - response}
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/protocol/area_question - GET REST api - response}
     def initialize(opts)
       @area = opts.fetch(:area).to_sym
 

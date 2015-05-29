@@ -2,18 +2,18 @@ require 'spec_helper'
 
 module DmtdVbmappData
 
-  describe VbmappAreaQuestion do
+  describe ProtocolAreaQuestion do
 
     it 'can be created' do
-      question = VbmappAreaQuestion.new(client: client, area: 'milestones', group: 'mand', question_json: question_json)
+      question = ProtocolAreaQuestion.new(client: client, area: 'milestones', group: 'mand', question_json: question_json)
       expect(question).to_not be nil
       expect(question.area).to eq(:milestones)
       expect(question.group).to eq(:mand)
       expect(question.example).to eq(question_json[:example])
       expect(question.materials).to eq(question_json[:materials])
-      expect(question.question_number).to eq(question_json[:questionNumber])
-      expect(question.question_text).to eq(question_json[:questionText])
-      expect(question.question_title).to eq(question_json[:questionTitle])
+      expect(question.number).to eq(question_json[:number])
+      expect(question.text).to eq(question_json[:text])
+      expect(question.title).to eq(question_json[:title])
     end
 
     it 'has questions' do
@@ -25,14 +25,14 @@ module DmtdVbmappData
         expect(questions.is_a?(Array)).to be true
 
         questions.each do |question|
-          expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+          expect(question.is_a?(DmtdVbmappData::ProtocolAreaQuestion)).to be true
 
           expect(question.definition).to_not be nil
           expect(question.materials).to_not be nil if question.area == :milestones
           expect(question.objective).to_not be nil
-          expect(question.question_number).to_not be nil
-          expect(question.question_text).to_not be nil
-          expect(question.question_title).to_not be nil if question.area == :barriers || question.area == :transitions
+          expect(question.number).to_not be nil
+          expect(question.text).to_not be nil
+          expect(question.title).to_not be nil if question.area == :barriers || question.area == :transitions
         end
 
         expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
@@ -45,7 +45,7 @@ module DmtdVbmappData
       client.vbmapp.areas.each do |area|
         area.groups.each do |group|
           group.questions.each do |question|
-            expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+            expect(question.is_a?(DmtdVbmappData::ProtocolAreaQuestion)).to be true
 
             responses = question.responses
             expect(responses).to_not be nil
@@ -73,7 +73,7 @@ module DmtdVbmappData
     def client(opts = {})
       language = opts.fetch(:language, nil)
 
-      Client.new(id: 57, language: language)
+      Client.new(id: VBMDATA_TEST_CLIENT_ID, language: language)
     end
 
     def question_json
@@ -81,9 +81,9 @@ module DmtdVbmappData
           example: 'example',
           guideContent: {},
           materials: 'wood',
-          questionNumber: 0,
-          questionText: 'what is this?',
-          questionTitle: 'a title??',
+          number: 0,
+          text: 'what is this?',
+          title: 'a title??',
           questionType: '',
           responses: []
       }

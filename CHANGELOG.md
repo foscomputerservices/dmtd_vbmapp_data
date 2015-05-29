@@ -31,4 +31,8 @@
  
 ## 1.1.2
 
-* Added VbmappAreaQuestion fields: definition, objective, question_title 
+* Added VbmappAreaQuestion fields: definition, objective, question_title
+ 
+## 1.2.0
+ 
+* Completely refactored the API according to the updated VBM Content Server API update

@@ -19,11 +19,7 @@ module DmtdVbmappData
 
     # @!attribute [r]
     #   @return [String] the title of the section
-    attr_reader :section_title
-
-    # @!attribute [r]
-    #   @return [String] an abbreviated title for the section
-    attr_reader :section_short_title
+    attr_reader :title
 
     # Creates an accessor for the VB-MAPP Guide Chapter Section on the VB-MAPP Data Server
     #
@@ -40,29 +36,16 @@ module DmtdVbmappData
       @section_num = opts.fetch(:section_num).to_i
 
       index_json = opts.fetch(:section_index_json)
-      @section_title = index_json[:sectionTitle]
-      @section_short_title = index_json[:sectionShortTitle]
-      @sub_sections_index = index_json[:subSections]
+      @title = index_json[:title]
     end
 
     # @note This method *does* block as the content is retrieved
     #
     # @return [String] The content of the Guide's chapter section
-    def section_content
-      @section_content = retrieve_guide_section[:sectionContent] if @section_content.nil?
+    def content
+      @content = retrieve_guide_section[:content] if @content.nil?
 
-      @section_content
-    end
-
-    # @note This method does *not* block
-    #
-    # @return [Array<GuideSectionSubSection>] The VB-MAPP Guide section's sub_sections
-    def sub_sections
-      @sub_sections = @sub_sections_index.map.with_index do |sub_section_index_json, sub_section_num|
-        GuideSectionSubSection.new(client: client, chapter_num: chapter_num, section_num: section_num, sub_section_num: sub_section_num, sub_section_index_json: sub_section_index_json)
-      end if @sub_sections.nil?
-
-      @sub_sections
+      @content
     end
 
     private

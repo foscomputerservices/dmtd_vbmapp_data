@@ -2,8 +2,8 @@ require 'dmtd_vbmapp_data/request_helpers'
 
 module DmtdVbmappData
 
-  # Provides for the retrieving of VB-MAPP Guide chapter sections from the VB-MAPP Data Server.
-  class VbmappAreaGroup
+  # Provides for the retrieving of VB-MAPP Protocol Area Group information from the VB-MAPP Data Server.
+  class ProtocolAreaGroup
 
     # @!attribute [r] client
     #   @return [Client] the associated client
@@ -17,14 +17,14 @@ module DmtdVbmappData
     #   @return [Symbol] the group of the question (e.g. :mand, :tact, :group1, etc.)
     attr_reader :group
 
-    # Creates an accessor for the VB-MAPP Area Group on the VB-MAPP Data Server
+    # Creates an accessor for the VB-MAPP Area Group on the VB-MAPP Data Server.
     #
     # @note This method does *not* block, simply creates an accessor and returns
     #
     # @option opts [Client] :client A client instance
     # @option opts [String | Symbol] :area The vbmapp area of the group (:milestones, :barriers, :transitions', :eesa)
     # @option opts [Hash]   :group_index_json The vbmapp index json for the group in the format described at
-    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710543 /1/vbmapp/index - GET REST api - Group Fields}
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710543 /1/protocol/index - GET REST api - Group Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @area = opts.fetch(:area).to_sym
@@ -39,12 +39,12 @@ module DmtdVbmappData
     #
     # @option opts [String | Symbol] :level Filters the questions to the given level (may be null)
     #
-    # @return [Array<VbmappAreaQuestion>] all of the area group's {VbmappAreaQuestion} instances
+    # @return [Array<ProtocolAreaQuestion>] all of the area group's {ProtocolAreaQuestion} instances
     def questions(opts = {})
       level_name = opts.fetch(:level, nil)
 
       @questions = retrieve_questions_json.map do |question_json|
-        VbmappAreaQuestion.new(client: client, area: area, group: group, question_json: question_json)
+        ProtocolAreaQuestion.new(client: client, area: area, group: group, question_json: question_json)
       end if @questions.nil?
 
       if level_name.nil?
@@ -55,7 +55,7 @@ module DmtdVbmappData
         start_num = level_desc[:start_question_num] + 1 # question_number is 1-based
         end_num = start_num + level_desc[:question_count]
 
-        result = @questions.select {|question| question.question_number >= start_num && question.question_number <= end_num}
+        result = @questions.select {|question| question.number >= start_num && question.number <= end_num}
       end
 
       result
@@ -71,7 +71,7 @@ module DmtdVbmappData
     private
 
     def self.end_point
-      '1/vbmapp/area_question'
+      '1/protocol/area_question'
     end
 
     def retrieve_questions_json
@@ -79,7 +79,7 @@ module DmtdVbmappData
           area: area,
           group: group
       }
-      response = RequestHelpers::get_authorized(end_point: VbmappAreaGroup::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
+      response = RequestHelpers::get_authorized(end_point: ProtocolAreaGroup::end_point, params: params, client_id: @client.id, client_code: @client.code, language: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

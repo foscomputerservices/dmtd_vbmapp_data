@@ -41,7 +41,7 @@ module DmtdVbmappData
     it 'can access the vbmapp' do
       Client.retrieve_clients.each do |client|
         expect(client.vbmapp).to_not be_nil
-        expect(client.vbmapp.is_a?(DmtdVbmappData::Vbmapp)).to eq(true)
+        expect(client.vbmapp.is_a?(DmtdVbmappData::Protocol)).to eq(true)
       end
     end
 

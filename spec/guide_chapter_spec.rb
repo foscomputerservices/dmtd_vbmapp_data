@@ -8,22 +8,21 @@ module DmtdVbmappData
       chapter = GuideChapter.new(client: client, chapter_num: 0, chapter_index_json: chapter_index_json)
       expect(chapter).to_not be nil
       expect(chapter.chapter_num).to eq(0)
-      expect(chapter.chapter_title).to eq(chapter_index_json[:chapterTitle])
-      expect(chapter.chapter_short_title).to eq(chapter_index_json[:chapterShortTitle])
+      expect(chapter.title).to eq(chapter_index_json[:title])
     end
 
-    it 'can pull preamble' do
-      prev_preamble = nil
+    it 'can pull content' do
+      prev_content = nil
 
       AVAILABLE_LANGUAGES.each do |language|
-        chapter_preamble = client(language: language).guide.chapters[0].chapter_preamble
+        content = client(language: language).guide.chapters[0].content
 
-        expect(chapter_preamble).to_not be nil
-        expect(chapter_preamble.is_a?(String)).to eq(true)
+        expect(content).to_not be nil
+        expect(content.is_a?(String)).to eq(true)
 
-        expect(chapter_preamble).to_not eq(prev_preamble) unless prev_preamble.nil?
+        expect(content).to_not eq(prev_content) unless prev_content.nil?
 
-        prev_preamble = chapter_preamble
+        prev_content = content
       end
     end
 
@@ -39,7 +38,7 @@ module DmtdVbmappData
       save_and_set_doc_type new_doc_type: 'html'
 
       chapter = GuideChapter.new(client: client, chapter_num: 0, chapter_index_json: chapter_index_json)
-      expect(chapter.chapter_preamble.include?('<p>')).to be true
+      expect(chapter.content.include?('<p>')).to be true
 
       restore_doc_type
     end
@@ -48,7 +47,7 @@ module DmtdVbmappData
       save_and_set_doc_type new_doc_type: 'text'
 
       chapter = GuideChapter.new(client: client, chapter_num: 0, chapter_index_json: chapter_index_json)
-      expect(chapter.chapter_preamble.include?('<p>')).to be false
+      expect(chapter.content.include?('<p>')).to be false
 
       restore_doc_type
     end
@@ -58,7 +57,7 @@ module DmtdVbmappData
     def client(opts = {})
       language = opts.fetch(:language, nil)
 
-      Client.new(id: 57, language: language)
+      Client.new(id: VBMDATA_TEST_CLIENT_ID, language: language)
     end
 
     def chapter_index_json

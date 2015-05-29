@@ -9,33 +9,22 @@ module DmtdVbmappData
       expect(section).to_not be nil
       expect(section.chapter_num).to eq(1)
       expect(section.section_num).to eq(1)
-      expect(section.section_title).to eq(section_index_json[:sectionTitle])
-      expect(section.section_short_title).to eq(section_index_json[:sectionShortTitle])
+      expect(section.title).to eq(section_index_json[:title])
     end
 
     it 'can pull section content' do
-      prev_section_content = nil
+      prev_content = nil
 
       AVAILABLE_LANGUAGES.each do |language|
-        section_content = client(language: language).guide.chapters[1].sections[0].section_content
+        content = client(language: language).guide.chapters[1].sections[0].content
 
-        expect(section_content).to_not be nil
-        expect(section_content.is_a?(String)).to eq(true)
+        expect(content).to_not be nil
+        expect(content.is_a?(String)).to eq(true)
 
-        expect(section_content).to_not eq(prev_section_content) unless prev_section_content.nil?
+        expect(content).to_not eq(prev_content) unless prev_content.nil?
 
-        prev_section_content = section_content
+        prev_content = content
       end
-    end
-
-    it 'has sub-sections' do
-      chapter = client.guide.chapters[1]
-      section = chapter.sections[5]
-      sub_sections = section.sub_sections
-
-      expect(sub_sections).to_not be nil
-      expect(sub_sections.is_a?(Array)).to eq(true)
-      expect(sub_sections.size).to be > 0
     end
 
     private
@@ -43,7 +32,7 @@ module DmtdVbmappData
     def client(opts = {})
       language = opts.fetch(:language, nil)
 
-      Client.new(id: 57, language: language)
+      Client.new(id: VBMDATA_TEST_CLIENT_ID, language: language)
     end
 
     def section_index_json

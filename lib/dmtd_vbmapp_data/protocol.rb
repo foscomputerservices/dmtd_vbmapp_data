@@ -2,8 +2,8 @@ require 'dmtd_vbmapp_data/request_helpers'
 
 module DmtdVbmappData
 
-  # Provides for the retrieving of VB-MAPP content from the VB-MAPP Data Server.
-  class Vbmapp
+  # Provides for the retrieving the Protocol content from the VB-MAPP Data Server.
+  class Protocol
 
     attr_reader :client
 
@@ -23,12 +23,12 @@ module DmtdVbmappData
     # @note The cache is an in-memory cache (not on-disc).  Thus, if the process is restarted,
     #    the cache will be dropped.  Additionally this cache expires once a day at midnight UTC.
     #
-    # @return [Array<VbmappArea>] The entire set of {VbmappArea} instances
+    # @return [Array<ProtocolArea>] The entire set of {ProtocolArea} instances
     def areas
       index_array = index
 
       @areas = index_array.map do |area_index_json|
-        VbmappArea.new(client: client, area_index_json: area_index_json)
+        ProtocolArea.new(client: client, area_index_json: area_index_json)
       end if @areas.nil? && index_array.is_a?(Array)
 
       @areas
@@ -62,11 +62,11 @@ module DmtdVbmappData
     end
 
     def self.end_point
-      '1/vbmapp/index'
+      '1/protocol/index'
     end
 
     def retrieve_vbmapp_index
-      response = RequestHelpers::get_authorized(end_point: Vbmapp::end_point, params: nil, client_id: @client.id, client_code: @client.code, languge: client.language)
+      response = RequestHelpers::get_authorized(end_point: Protocol::end_point, params: nil, client_id: @client.id, client_code: @client.code, languge: client.language)
       proc_response = RequestHelpers::process_json_response(response)
       json = proc_response[:json]
       server_response_code = proc_response[:code]

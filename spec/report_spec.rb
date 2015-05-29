@@ -44,7 +44,7 @@ module DmtdVbmappData
     def client(opts = {})
       language = opts.fetch(:language, nil)
 
-      Client.new(id: 57, language: language)
+      Client.new(id: VBMDATA_TEST_CLIENT_ID, language: language)
     end
   end
 

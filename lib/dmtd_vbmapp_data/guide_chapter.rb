@@ -15,11 +15,7 @@ module DmtdVbmappData
 
     # @!attribute [r] chapter_title
     #   @return [String] the title of the chapter
-    attr_reader :chapter_title
-
-    # @!attribute [r] chapter_short_title
-    #   @return [String] an abbreviated title for the chapter
-    attr_reader :chapter_short_title
+    attr_reader :title
 
     # Creates an accessor for the VB-MAPP Guide Chapter on the VB-MAPP Data Server
     #
@@ -34,8 +30,7 @@ module DmtdVbmappData
       @chapter_num = opts.fetch(:chapter_num).to_i
 
       index_json = opts.fetch(:chapter_index_json)
-      @chapter_title = index_json[:chapterTitle]
-      @chapter_short_title = index_json[:chapterShortTitle]
+      @title = index_json[:title]
 
       @sections_index = index_json[:sections]
     end
@@ -43,10 +38,10 @@ module DmtdVbmappData
     # @note This method *does* block as the content is retrieved
     #
     # @return [String] The preamble of the Guide's chapter
-    def chapter_preamble
-      @chapter_preamble = retrieve_guide_chapter[:chapterPreamble] if @chapter_preamble.nil?
+    def content
+      @content = retrieve_guide_chapter[:content] if @content.nil?
 
-      @chapter_preamble
+      @content
     end
 
     # @note This method does *not* block

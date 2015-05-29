@@ -8,6 +8,7 @@ env:
   - secure: gP248+snjbNPc0Uk6+rcTqRCVOrC7xsI9kFDQMnC+k04qkZ4B2ZJbz8ZFhws1XFAd0SNhEsmqnxVuTwAIUxdsJpe8eEqUFIYpNRWz6KNL58yADmQX84BjeNLBM4BxPIej4crr+1i++KxW9WVMV1SAA6/5NQ9wR0fCC39HyaVmgk=
   - secure: Tv043DGoNh8bconcyqXVeWPnR81TrbLC2xwiUbdE6Utm9I5s34aqCjeiv1oV8Dd/OfqceHW9exQD9qBgD9VHsV+2VQhuamjwI4Oy4/PwHyyaMuSVKgvQsHfJRdxMNQbHNxfdYBhf4W6yYbSWquP8JzO3fnLtXEVEGDrDBxI3CRg=
   - secure: GRXGSJG3ygT//t/ADWGLV8G9xYgAs2twmMV9vjP8qpCDn0ijlk3KpwrieqO+Ewz4ru1u1GS6ha5KFlTA5pWRdzc75u7N7xHFbMnLSMe74U54pU12xuAgwo5mGjGm9KcjCRlR5d2aKAcuI2geTz2dfWAZTrjak7mQcy1APUoBmxk=
+  - secure: f/OsMLRzmj5KMoV8lGcpcSuEeftnnRMXCBkSZ12QZLHcJF02tfJhdFJL+Xqd4eLQdZwZs4i38eAGQbAwePi3PUEwUPflzP0EvsmPFfDWMARihnTW294KkBn8+1+TeKVlV2sGlumU6OH8mA+qss6J+ByroA5dMaAQaXaskiyHulI=
 
 before_install:
 - gem install bundler --no-rdoc --no-ri --no-document --quiet

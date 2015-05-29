@@ -2,8 +2,8 @@ require 'dmtd_vbmapp_data/request_helpers'
 
 module DmtdVbmappData
 
-  # Provides for the retrieving of VB-MAPP Guide chapter sections from the VB-MAPP Data Server.
-  class VbmappAreaQuestion
+  # Provides for the retrieving of VB-MAPP Area Question on the VB-MAPP Data Server.
+  class ProtocolAreaQuestion
 
     # @!attribute [r] client
     #   @return [Client] the associated client
@@ -33,17 +33,17 @@ module DmtdVbmappData
     #   @return [String] The objective of the question
     attr_reader :objective
 
-    # @!attribute [r] question_number
+    # @!attribute [r] number
     #   @return [Integer] the question number (0...n)
-    attr_reader :question_number
+    attr_reader :number
 
-    # @!attribute [r] question_text
+    # @!attribute [r] text
     #   @return [String] the text of the question itself
-    attr_reader :question_text
+    attr_reader :text
 
-    # @!attribute [r] question_title
+    # @!attribute [r] title
     #   @return [String] a title to display at the top of a grid column
-    attr_reader :question_title
+    attr_reader :title
 
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
@@ -53,7 +53,7 @@ module DmtdVbmappData
     # @option opts [String | Symbol] :area The vbmapp area of the group ('milestones', 'barriers', 'transitions', 'eesa')
     # @option opts [String | Symbol] :group The vbmapp area group name (i.e. 'mand', 'tact', 'group1', etc.)
     # @option opts [Hash]   :question_json The vbmapp question json for the question in the format described at
-    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/vbmapp/area_question - GET REST api - Fields}
+    #     {https://datamtd.atlassian.net/wiki/pages/viewpage.action?pageId=18710549 /1/protocol/area_question - GET REST api - Fields}
     def initialize(opts)
       @client = opts.fetch(:client)
       @area = opts.fetch(:area).to_sym
@@ -66,15 +66,15 @@ module DmtdVbmappData
 
       @example = question_json[:example] || guide_content_json[:examples]
       @materials = question_json[:materials] || guide_content_json[:materials]
-      @question_number = question_json[:questionNumber].to_i
-      @question_text = question_json[:questionText]
-      @question_title = question_json[:questionTitle] || guide_content_json[:title]
+      @number = question_json[:number].to_i
+      @text = question_json[:text]
+      @title = question_json[:title] || guide_content_json[:title]
       @responses_json_array = question_json[:responses]
     end
 
     # @note This method does *not* block.
     #
-    # @return [Array<VbmappAreaResponse>] all of the VB-MAPP question's possible responses
+    # @return [Array<ProtocolAreaResponse>] all of the VB-MAPP question's possible responses
     def responses
       if @responses.nil?
 
@@ -82,7 +82,7 @@ module DmtdVbmappData
         if @responses_json_array.nil?
           @responses = client.vbmapp.areas.select { |client_area| client_area.area == area}[0].responses
         else
-          @responses = @responses_json_array.map { |response_json| VbmappAreaResponse.new(area: area, response_json: response_json) }
+          @responses = @responses_json_array.map { |response_json| ProtocolAreaResponse.new(area: area, response_json: response_json) }
         end
       end
 

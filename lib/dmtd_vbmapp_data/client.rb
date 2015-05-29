@@ -126,9 +126,9 @@ module DmtdVbmappData
 
     # @note This method does *not* block
     #
-    # @return [Vbmapp]
+    # @return [Protocol]
     def vbmapp
-      Vbmapp.new(client: self, language: language)
+      Protocol.new(client: self, language: language)
     end
 
     # @note This method does *not* block

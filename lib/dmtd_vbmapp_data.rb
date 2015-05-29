@@ -9,13 +9,12 @@ require 'dmtd_vbmapp_data/client'
 require 'dmtd_vbmapp_data/guide'
 require 'dmtd_vbmapp_data/guide_chapter'
 require 'dmtd_vbmapp_data/guide_chapter_section'
-require 'dmtd_vbmapp_data/guide_section_sub_section'
 
-require 'dmtd_vbmapp_data/vbmapp'
-require 'dmtd_vbmapp_data/vbmapp_area'
-require 'dmtd_vbmapp_data/vbmapp_area_group'
-require 'dmtd_vbmapp_data/vbmapp_area_question'
-require 'dmtd_vbmapp_data/vbmapp_area_response'
+require 'dmtd_vbmapp_data/protocol'
+require 'dmtd_vbmapp_data/protocol_area'
+require 'dmtd_vbmapp_data/protocol_area_group'
+require 'dmtd_vbmapp_data/protocol_area_question'
+require 'dmtd_vbmapp_data/protocol_area_response'
 
 require 'dmtd_vbmapp_data/assessment_report'
 
@@ -52,6 +51,6 @@ module DmtdVbmappData
     @config
   end
 
-  AVAILABLE_LANGUAGES=%w(en es)
+  AVAILABLE_LANGUAGES=%w(en) # es)
 
 end

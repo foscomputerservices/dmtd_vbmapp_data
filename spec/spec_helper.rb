@@ -19,6 +19,10 @@
 
 require 'dmtd_vbmapp_data'
 
+module DmtdVbmappData
+  VBMDATA_TEST_CLIENT_ID=ENV['VBMDATA_TEST_CLIENT_ID'].to_i
+end
+
 RSpec.configure do |config|
 
   DmtdVbmappData.configure server_url: ENV['VBMDATA_TEST_URL'], auth_token: ENV['VBMDATA_TEST_TOKEN'], organization_id: ENV['VBMDATA_TEST_ORG_ID']

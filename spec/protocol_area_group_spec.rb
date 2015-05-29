@@ -2,10 +2,10 @@ require 'spec_helper'
 
 module DmtdVbmappData
 
-  describe VbmappAreaGroup do
+  describe ProtocolAreaGroup do
 
     it 'can be created' do
-      group = VbmappAreaGroup.new(client: client, area: 'milestones', group_index_json: group_index_json)
+      group = ProtocolAreaGroup.new(client: client, area: 'milestones', group_index_json: group_index_json)
 
       expect(group).to_not be nil
       expect(group.area).to eq(:milestones)
@@ -20,7 +20,7 @@ module DmtdVbmappData
         expect(questions).to_not be nil
 
         questions.each do |question|
-          expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+          expect(question.is_a?(DmtdVbmappData::ProtocolAreaQuestion)).to be true
         end
 
         expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
@@ -45,7 +45,7 @@ module DmtdVbmappData
           expect(questions).to_not be nil
 
           questions.each do |question|
-            expect(question.is_a?(DmtdVbmappData::VbmappAreaQuestion)).to be true
+            expect(question.is_a?(DmtdVbmappData::ProtocolAreaQuestion)).to be true
           end
         end
       end
@@ -56,7 +56,7 @@ module DmtdVbmappData
     def client(opts = {})
       language = opts.fetch(:language, nil)
 
-      Client.new(id: 57, language: language)
+      Client.new(id: VBMDATA_TEST_CLIENT_ID, language: language)
     end
 
     def group_index_json

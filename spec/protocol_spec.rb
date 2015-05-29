@@ -2,21 +2,21 @@ require 'spec_helper'
 
 module DmtdVbmappData
 
-  describe Vbmapp do
+  describe Protocol do
 
     it 'can be created' do
       client = Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE)
 
-      expect(Vbmapp.new(client: client)).to_not be nil
+      expect(Protocol.new(client: client)).to_not be nil
     end
 
     it 'can provide areas' do
-      vbmapp = Vbmapp.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE))
+      vbmapp = Protocol.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE))
 
       expect(vbmapp.areas).to_not be nil
       expect(vbmapp.areas.is_a?(Array)).to eq(true)
       vbmapp.areas.each do |chapter|
-        expect(chapter.is_a?(DmtdVbmappData::VbmappArea)).to eq(true)
+        expect(chapter.is_a?(DmtdVbmappData::ProtocolArea)).to eq(true)
       end
     end
 
