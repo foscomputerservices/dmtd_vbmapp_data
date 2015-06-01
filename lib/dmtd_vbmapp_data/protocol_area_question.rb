@@ -45,6 +45,10 @@ module DmtdVbmappData
     #   @return [String] a title to display at the top of a grid column
     attr_reader :title
 
+    # @!attribute [r] level
+    #   @return [Integer] the level number of the question (only when area == :milestones)
+    attr_reader :level
+
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
     # @note This method does *not* block, simply creates an accessor and returns
@@ -60,15 +64,14 @@ module DmtdVbmappData
       @group = opts.fetch(:group).to_sym
       question_json = opts.fetch(:question_json)
 
-      guide_content_json = question_json[:guideContent] || {}
-      @definition = guide_content_json[:definition] || ''
-      @objective = guide_content_json[:objective] || ''
-
-      @example = question_json[:example] || guide_content_json[:examples]
-      @materials = question_json[:materials] || guide_content_json[:materials]
+      @definition = question_json[:definition]
+      @objective = question_json[:objective]
+      @example = question_json[:example]
+      @materials = question_json[:materials]
       @number = question_json[:number].to_i
       @text = question_json[:text]
-      @title = question_json[:title] || guide_content_json[:title]
+      @title = question_json[:title]
+      @level = question_json[:level]
       @responses_json_array = question_json[:responses]
     end
 

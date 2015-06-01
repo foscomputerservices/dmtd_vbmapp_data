@@ -36,3 +36,7 @@
 ## 1.2.0
  
 * Completely refactored the API according to the updated VBM Content Server API update
+
+## 1.2.1
+
+* Added support for level property on ProtocolAreaQuestion

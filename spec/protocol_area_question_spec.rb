@@ -14,6 +14,7 @@ module DmtdVbmappData
       expect(question.number).to eq(question_json[:number])
       expect(question.text).to eq(question_json[:text])
       expect(question.title).to eq(question_json[:title])
+      expect(question.level).to eq(question_json[:level])
     end
 
     it 'has questions' do
@@ -33,6 +34,7 @@ module DmtdVbmappData
           expect(question.number).to_not be nil
           expect(question.text).to_not be nil
           expect(question.title).to_not be nil if question.area == :barriers || question.area == :transitions
+          expect(question.level).to_not be nil if question.area == :milestones
         end
 
         expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
@@ -85,6 +87,7 @@ module DmtdVbmappData
           text: 'what is this?',
           title: 'a title??',
           questionType: '',
+          level: '1',
           responses: []
       }
     end
