@@ -40,3 +40,7 @@
 ## 1.2.1
 
 * Added support for level property on ProtocolAreaQuestion
+
+## 1.2.2
+
+* Removed Hashie gem dependency and internalized needed functionality (see Hash.rb)

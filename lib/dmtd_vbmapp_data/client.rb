@@ -184,7 +184,7 @@ module DmtdVbmappData
       server_response_code = response.code.to_i
 
       if server_response_code == 200
-        json_body = Hashie.symbolize_keys!(JSON.parse(response.body))
+        json_body = JSON.parse(response.body).symbolize_hash_keys
         json = json_body[:response]
       end
 

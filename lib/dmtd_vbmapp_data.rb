@@ -1,9 +1,10 @@
 # External deps
 require 'psych'
 require 'json'
-require 'hashie'
 
 # Our classes
+require 'dmtd_vbmapp_data/hash'
+
 require 'dmtd_vbmapp_data/client'
 
 require 'dmtd_vbmapp_data/guide'
