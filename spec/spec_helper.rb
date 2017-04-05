@@ -19,6 +19,11 @@
 
 require 'dmtd_vbmapp_data'
 
+ENV['VBMDATA_TEST_CLIENT_ID'] = '1'
+ENV['VBMDATA_TEST_URL'] = 'http://localhost:3000'
+ENV['VBMDATA_TEST_TOKEN'] = 'def4f4f0b09ae2948fad96dd464a40dc'
+ENV['VBMDATA_TEST_ORG_ID'] = '1'
+
 module DmtdVbmappData
   VBMDATA_TEST_CLIENT_ID=ENV['VBMDATA_TEST_CLIENT_ID'].to_i
 end

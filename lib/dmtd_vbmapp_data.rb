@@ -52,6 +52,6 @@ module DmtdVbmappData
     @config
   end
 
-  AVAILABLE_LANGUAGES=%w(en) # es)
+  AVAILABLE_LANGUAGES=%w(en es fr)
 
 end

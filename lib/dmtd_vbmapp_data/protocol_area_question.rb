@@ -79,15 +79,7 @@ module DmtdVbmappData
     #
     # @return [Array<ProtocolAreaResponse>] all of the VB-MAPP question's possible responses
     def responses
-      if @responses.nil?
-
-        # If we don't have responses, get them from the area
-        if @responses_json_array.nil?
-          @responses = client.vbmapp.areas.select { |client_area| client_area.area == area}[0].responses
-        else
-          @responses = @responses_json_array.map { |response_json| ProtocolAreaResponse.new(area: area, response_json: response_json) }
-        end
-      end
+      @responses = @responses_json_array.map { |response_json| ProtocolAreaResponse.new(area: area, response_json: response_json) } if @responses.nil?
 
       @responses
     end
