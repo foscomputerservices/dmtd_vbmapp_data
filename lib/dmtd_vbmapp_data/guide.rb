@@ -34,27 +34,39 @@ module DmtdVbmappData
       @chapters
     end
 
+    def expire_cache(opts = {})
+      if defined?(@@guide_cache) && !@@guide_cache.nil?
+        today = DateTime.now.new_offset(0).to_date
+        cache_day = @@guide_cache[:datestamp]
+
+        if cache_day != today || !opts[:force].nil?
+          @chapters = nil
+          @@guide_cache = nil
+        end
+      end
+    end
+
     private
 
     def index
       expire_cache
-      if defined?(@@guide_cache).nil?
-        @@guide_cache = {
-            datestamp: DateTime.now.new_offset(0).to_date,
-            guide_index: retrieve_guide_index
-        }
+      unless defined?(@@guide_cache) && !@@guide_cache.nil?
+        updated_index = retrieve_guide_index
+
+        if updated_index.is_a?(Array)
+          @@guide_cache = {
+              datestamp: DateTime.now.new_offset(0).to_date,
+              guide_index: updated_index
+          }
+        else
+          @@guide_cache = {
+              datestamp: DateTime.now.new_offset(0).to_date - 2.days, # expire immediately
+              guide_index: []
+          }
+        end
       end
 
       @@guide_cache[:guide_index]
-    end
-
-    def expire_cache
-      if defined?(@@guide_cache)
-        today = DateTime.now.new_offset(0).to_date
-        cache_day = @@guide_cache[:datestamp]
-
-        @@guide_cache = nil unless cache_day == today
-      end
     end
 
     def self.end_point

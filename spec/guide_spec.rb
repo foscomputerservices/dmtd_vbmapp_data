@@ -27,6 +27,13 @@ module DmtdVbmappData
       end
     end
 
+    it 'can recover from expiry' do
+      guide = Guide.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE), language: AVAILABLE_LANGUAGES[0])
+      expect(guide.chapters).to_not be nil
+
+      guide.expire_cache force: true
+      expect(guide.chapters).to_not be nil
+    end
   end
 
 end
