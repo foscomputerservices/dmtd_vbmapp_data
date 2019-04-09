@@ -49,6 +49,10 @@ module DmtdVbmappData
     #   @return [Integer] the level number of the question (only when area == :milestones)
     attr_reader :level
 
+    # @!attribute [r] skills
+    #   @return [Skill] the set of Task Analysis Skills for the question
+    attr_reader :skills
+
     # Creates an accessor for the VB-MAPP Area Question on the VB-MAPP Data Server
     #
     # @note This method does *not* block, simply creates an accessor and returns
@@ -73,6 +77,15 @@ module DmtdVbmappData
       @title = question_json[:title]
       @level = question_json[:level]
       @responses_json_array = question_json[:responses]
+
+      skills = question_json[:skills]
+      @skills = if skills.nil?
+                  []
+                else
+                  question_json[:skills].map do |skill|
+                    ProtocolAreaSkill.new(question_json: skill)
+                  end
+                end
     end
 
     # @note This method does *not* block.

@@ -16,6 +16,7 @@ require 'dmtd_vbmapp_data/protocol_area'
 require 'dmtd_vbmapp_data/protocol_area_group'
 require 'dmtd_vbmapp_data/protocol_area_question'
 require 'dmtd_vbmapp_data/protocol_area_response'
+require 'dmtd_vbmapp_data/protocol_area_skill'
 
 require 'dmtd_vbmapp_data/assessment_report'
 

@@ -32,12 +32,25 @@ module DmtdVbmappData
             expect(question.is_a?(DmtdVbmappData::ProtocolAreaQuestion)).to be true
 
             expect(question.definition).to_not be nil
-            expect(question.materials).to_not be nil if question.area == :milestones
             expect(question.objective).to_not be nil
             expect(question.number).to_not be nil
             expect(question.text).to_not be nil
             expect(question.title).to_not be nil if question.area == :barriers || question.area == :transitions
-            expect(question.level).to_not be nil if question.area == :milestones
+
+            next unless question.area == :milestones
+
+            expect(question.materials).to_not be nil
+            expect(question.level).to_not be nil
+            expect(question.skills).to_not be nil
+
+            # TODO: VBMASTS-26 -- add support for es/fr
+            expect(question.skills.size).to be > 0 if language == 'en'
+
+            question.skills.each do |skill|
+              expect(skill.id).to_not be nil
+              expect(skill.supporting).to_not be nil
+              expect(skill.skill).to_not be nil
+            end
           end
 
           expect(questions).to_not eq(prev_questions) unless prev_questions.nil?
