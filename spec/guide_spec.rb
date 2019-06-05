@@ -13,12 +13,15 @@ module DmtdVbmappData
     it 'can provide chapters' do
       prev_chapters = nil
       AVAILABLE_LANGUAGES.each do |language|
-        guide = Guide.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE), language: language)
+        guide = Guide.new(client: Client.new(date_of_birth: Date.today, gender: DmtdVbmappData::GENDER_FEMALE, language: language))
 
         expect(guide.chapters).to_not be nil
         expect(guide.chapters.is_a?(Array)).to eq(true)
         guide.chapters.each do |chapter|
           expect(chapter.is_a?(DmtdVbmappData::GuideChapter)).to eq(true)
+          expect(chapter.title).to eq("CHAPTER 1") if language == 'en' && chapter.chapter_num == 1
+          expect(chapter.title).to eq("CAPÍTULO 1") if language == 'es' && chapter.chapter_num == 1
+          expect(chapter.title).to eq("CHAPITRE 1") if language == 'fr' && chapter.chapter_num == 1
         end
 
         expect(guide.chapters).to_not eq(prev_chapters) unless prev_chapters.nil?

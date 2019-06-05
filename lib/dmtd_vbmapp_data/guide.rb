@@ -50,23 +50,29 @@ module DmtdVbmappData
 
     def index
       expire_cache
-      unless defined?(@@guide_cache) && !@@guide_cache.nil?
+
+      lang = @client.language
+      lang = lang.nil? ? 'en'.to_sym : lang.to_sym
+      unless defined?(@@guide_cache) && !@@guide_cache.nil? && !@@guide_cache[:guide_index][lang].nil?
         updated_index = retrieve_guide_index
 
+        guide_index = (defined?(@@guide_cache) && !@@guide_cache.nil?) ? @@guide_cache[:guide_index] : {}
+
         if updated_index.is_a?(Array)
+          guide_index[lang] = updated_index
           @@guide_cache = {
               datestamp: DateTime.now.new_offset(0).to_date,
-              guide_index: updated_index
+              guide_index: guide_index
           }
         else
           @@guide_cache = {
               datestamp: DateTime.now.new_offset(0).to_date - 2.days, # expire immediately
-              guide_index: []
+              guide_index: {}
           }
         end
       end
 
-      @@guide_cache[:guide_index]
+      @@guide_cache[:guide_index][lang]
     end
 
     def self.end_point
